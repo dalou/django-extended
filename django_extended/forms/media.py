@@ -56,11 +56,11 @@ class MediaInput(forms.widgets.ClearableFileInput):
     class Media:
         css = {
             'all': (
-                'django_extended/fields//media.css',
+                'django_extended/forms//media.css',
             )
         }
         js = (
-            'django_extended/fields//media.js',
+            'django_extended/forms//media.js',
         )
 
 

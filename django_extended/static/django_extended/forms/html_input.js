@@ -67,7 +67,7 @@
                                     var content = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
                                     if(content == '')
                                     {
-                                        var placeholder_html = '<span class="fields-bundle-html_input-placeholder">'+placeholder+'</span>'
+                                        var placeholder_html = '<span class="django_extended-html_input-placeholder">'+placeholder+'</span>'
                                         editor.setContent(placeholder_html);
                                         editor.getElement().innerHTML = placeholder_html
                                     }
