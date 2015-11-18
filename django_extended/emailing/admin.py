@@ -42,7 +42,7 @@ class SendEmailForm(forms.ModelForm):
 
 class SendMailMixin(object):
 
-    emailing_form_template_name = 'emailing/admin/send_form.html'
+    emailing_form_template_name = 'django_extended/emailing/admin/send_form.html'
 
     def __init__(self, *args, **kwargs):
         super(SendMailMixin, self).__init__(*args, **kwargs)
