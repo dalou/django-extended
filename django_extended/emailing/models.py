@@ -32,7 +32,7 @@ class EmailingUserActivationToken(models.Model):
         super(EmailingUserActivationToken, self).save(**kwargs)
 
     def activate_user(self):
-        if not self.is_used:
+        if True:#not self.is_used:
             User = get_user_model()
             self.email = self.email.strip()
             if is_valid_email(self.email):
@@ -121,14 +121,22 @@ class Emailing(models.Model):
                         activation_token, created = EmailingUserActivationToken.objects.get_or_create(email=receiver)
                         html = html.replace(activate_url.group(0), activation_token.get_activate_url() )
 
-                    message = HtmlTemplateEmail(
-                        subject=self.subject,
-                        sender=self.sender,
-                        receivers=[receiver],
-                        html=html,
-                    )
-                    messages.append(message)
-                    final_receivers.append(receiver)
+                    if not test:
+                        transaction, created = EmailingTransaction.objects.get_or_create(receiver=receiver, email=self)
+                    else:
+                        created = True
+                    if created and transaction.send_count == 0:
+                        message = HtmlTemplateEmail(
+                            subject=self.subject,
+                            sender=self.sender,
+                            receivers=[receiver],
+                            html=html,
+                        )
+                        messages.append(message)
+                        final_receivers.append(receiver)
+                        if not test:
+                            transaction.send_count += 1
+                            transaction.save()
 
             send_mass_email(messages)
             if test:
@@ -142,10 +150,10 @@ class Emailing(models.Model):
 
 class EmailingTransaction(models.Model):
 
-    email = models.ForeignKey('django_extended.Emailing')
     date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
+    emailing = models.ForeignKey('django_extended.Emailing')
     receiver = models.EmailField(u"Adresse email", max_length=254)
-    is_sent = models.BooleanField(u"Envoyé ?", default=False)
+    send_count = models.IntegerField(u"Compteur d'envois", default=0)
 
     class Meta:
         verbose_name = u"Transaction"

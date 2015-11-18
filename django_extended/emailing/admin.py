@@ -19,7 +19,7 @@ admin.site.register(EmailingTestEmail, EmailingTestEmailAdmin)
 
 
 class EmailingTransactionAdmin(admin.ModelAdmin):
-    list_display = ('email', 'receiver', 'date_created', 'is_sent')
+    list_display = ('emailing', 'receiver', 'date_created', 'send_count')
 admin.site.register(EmailingTransaction, EmailingTransactionAdmin)
 
 
