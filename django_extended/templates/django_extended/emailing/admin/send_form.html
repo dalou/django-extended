@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/change_form.html" %}
 {% load url from future %}
 {% load admin_static %}
 
@@ -14,33 +14,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/mode-html.js"></script>
 {% endblock %}
 
-{% block content %}
-<div id="content-main">
+{% block submit_buttons_bottom %}
 
-    <div class="inner-center-column">
+<div class="submit-row clearfix">
+  <button type="submit" class="btn btn-high btn-info" name="_continue">Enregistrer</button>
+  <button type="submit" name="_sendtest" class="btn">Enregistrer et envoyer un test</button>
+  <button onclick="return confirm('Attention les envois de mails sont rééls, confirmer ?');" type="submit" name="_sendreal" class="btn btn-danger">Enregistrer et envoyer !</button>
 
-        <h1>Envoyer un email groupé / customisé / envois de masse</h1>
 
-        {% if contacts.count == 1 %}
-
-            Il n'y qu'un seul contact : <b>{{ contacts.first }}</b>, <br/>
-            {% if contacts.first.public_url %}
-                voici son url de connexion : <b>{{ contacts.first.public_url }}</b>
-            {% else %}
-                il ne possède pas encore d'url de connexion
-            {% endif %}
-
-        {% endif %}
-        <form action="" method="post" class="form-horizontal">
-            {% csrf_token %}
-            <input name="_send_email" type="hidden" value="1" />
-            {% include 'suit/form_as_fieldset.html' %}
-            <div class="submit-row submit-row-bottom">
-                <input name="_emailing_form_send_real" type="submit" value="Envoyer" class="btn btn-large btn-info"/>
-                <input name="_emailing_form_send_test" type="submit" value="Envoyer un test" class="btn btn-large btn-info"/>
-            </div>
-        </form>
-
-    </div>
 </div>
 {% endblock %}

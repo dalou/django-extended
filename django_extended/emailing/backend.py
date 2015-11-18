@@ -14,25 +14,27 @@ class DevBackend(EmailBackend):
         return recipients
 
     def _send(self, message):
+        orginial_receiver = ", ".join(message.to)
         message.to = self.route_recipients(message.to)
         message.cc = self.route_recipients(message.cc)
         message.bcc = self.route_recipients(message.bcc)
+        message.subject += ' <orginal receivers : %s>' % orginial_receiver
         super(DevBackend, self)._send(message)
 
 
 class ProductionBackend(EmailBackend):
 
     def route_recipients(self, recipients):
-        if getattr(settings, 'EMAIL_DOMAIN_ONLY', False):
-            receivers = ", ".join(list(set(TestEmail.objects.all().values_list('email', flat=True))))
-            # for i,r in enumerate(recipients):
-            #     if not r.endswith('@%s' % PROJECT_DOMAIN):
-            #         recipients = settings.DEFAULT_FROM_EMAIL
+        # if getattr(settings, 'EMAIL_DOMAIN_ONLY', False):
+        #     receivers = ", ".join(list(set(TestEmail.objects.all().values_list('email', flat=True))))
+        #     # for i,r in enumerate(recipients):
+        #     #     if not r.endswith('@%s' % PROJECT_DOMAIN):
+        #     #         recipients = settings.DEFAULT_FROM_EMAIL
         return recipients
 
     def _send(self, message):
-        if getattr(settings, 'EMAIL_DOMAIN_ONLY', False):
-            message.to = self.route_recipients(message.to)
-            message.cc = self.route_recipients(message.cc)
-            message.bcc = self.route_recipients(message.bcc)
+        # if getattr(settings, 'EMAIL_DOMAIN_ONLY', False):
+        #     message.to = self.route_recipients(message.to)
+        #     message.cc = self.route_recipients(message.cc)
+        #     message.bcc = self.route_recipients(message.bcc)
         super(ProductionBackend, self)._send(message)

@@ -11,6 +11,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.sites.models import Site
+from django.contrib.auth import get_user_model
 
 from .utils import *
 
@@ -30,18 +31,41 @@ class EmailingUserActivationToken(models.Model):
             self.token =  self._hash_func("".join(bits).encode("utf-8")).hexdigest()
         super(EmailingUserActivationToken, self).save(**kwargs)
 
-    def activate_user(self, user):
-        if not user.is_active:
-            user.is_active = True
-            self.save()
-            return True
-        return False
+    def activate_user(self):
+        if not self.is_used:
+            User = get_user_model()
+            self.email = self.email.strip()
+            if is_valid_email(self.email):
+                try:
+                    user = User.objects.get(email__iexact=self.email)
+                except User.DoesNotExist:
+                    user = User(
+                        email=self.email.strip(),
+                        is_active=True,
+                    )
+                    # if password:
+                    #     user.set_password(password)
+                    # else:
+                    user.set_unusable_password()
+
+                    if not user.username:
+                        user.username = self.email.split('@')[0][0:254]
+                    user.save()
+
+                if not user.is_active:
+                    user.is_active = True
+                    user.save()
+                self.is_used = True
+                self.save()
+                return user
+
+        return None
 
     def get_activate_url(self):
         return "{0}://{1}{2}".format(
             getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http"),
             Site.objects.get_current(),
-            reverse("emailing:activate-user", args=[self.token])
+            reverse("django_extended-emailing_activate_user", args=[self.token])
         )
 
     def authenticate_user(self, request, user, remember=False):
@@ -58,10 +82,13 @@ class Emailing(models.Model):
     date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
     name = models.CharField(u"Nom", max_length=254)
     subject = models.CharField(u"Sujet du mail", max_length=254, blank=True, null=True)
-    receivers = models.TextField(u"Adresses emails", blank=True, null=True)
-    template = models.TextField(u"Template du mail")
-    template_name = models.TextField(u"Template name", blank=True, null=True)
-    is_sent = models.BooleanField(u"Envoyé ?", default=False)
+    sender = models.CharField(u"De", max_length=254, blank=True, null=True)
+    receivers = models.TextField(u"Vers (destinations réélles)", blank=True, null=True)
+    receivers_test = models.TextField(u"Vers (destination de test)", blank=True, null=True)
+    template = models.TextField(u"Template")
+    # template_name = models.TextField(u"Template name", blank=True, null=True)
+    send_count = models.IntegerField(u"Compteur d'envois", default=0)
+    test_count = models.IntegerField(u"Compteur de tests", default=0)
 
     class Meta:
         verbose_name = u"Email groupé"
@@ -69,62 +96,49 @@ class Emailing(models.Model):
         ordering = ('-date_created',)
 
     def __unicode__(self):
-        return u"{0} - {1}".format(self.name, self.email)
+        return u"{0} - {1}".format(self.name, self.subject)
 
-    def send_test(self, force=False):
-        receivers = []
-        activate_url = re.search(r'\*\|ACTIVATE_URL\|\*', self.template)
+    def send(self, force=False, test=True):
+        final_receivers = []
+        if self.pk:
+            activate_url = re.search(r'\*\|ACTIVATE_URL\|\*', self.template)
 
-        for email in list(set(TestEmail.objects.all().values_list('email', flat=True))):
-            html = self.template
+            # TODO replace mailchimp var on self.template
 
-            if activate_url:
-                print activate_url, activate_url.group(0)
+            receivers = self.receivers_test if test else self.receivers
+            receivers = receivers.split(',')
+            messages = []
 
-                activation_token, created = UserActivationToken.objects.get_or_create(email=email)
-                html = html.replace(activate_url.group(0), activation_token.get_activate_url() )
+            for receiver in receivers:
+                receiver = receiver.strip()
+                if is_valid_email(receiver):
 
-            email_context = {
-                'user': self,
-            }
-            send_html_email(
-                self.subject,
-                settings.DEFAULT_NO_REPLY_EMAIL,
-                [email],
-                html=html,
-                context=email_context
-            )
-            receivers.append(email)
-        return receivers
+                    html = self.template
 
-    def send(self, force=False):
-        receivers = []
+                    if activate_url:
+                        print activate_url, activate_url.group(0)
 
-        # if not self.is_sent:
-        #     template = self.template
-        #     activate_url = re.search(r'\{\{\s*activate_url\s*\}\}', template)
+                        activation_token, created = EmailingUserActivationToken.objects.get_or_create(email=receiver)
+                        html = html.replace(activate_url.group(0), activation_token.get_activate_url() )
 
-        #     if activate_url:
+                    message = HtmlTemplateEmail(
+                        subject=self.subject,
+                        sender=self.sender,
+                        receivers=[receiver],
+                        html=html,
+                    )
+                    messages.append(message)
+                    final_receivers.append(receiver)
 
-        #         activation_token, created = UserActivationToken.get_or_create(email=email)
+            send_mass_email(messages)
+            if test:
+                self.test_count += 1
+            else:
+                self.send_count += 1
+            self.save()
+        return final_receivers
 
-        #         template.replace()
 
-        #     email_context = {
-        #         'user': self,
-        #     }
-        #     email_context.update(context)
-        #     send_html_email(
-        #         subject,
-        #         settings.DEFAULT_NO_REPLY_EMAIL,
-        #         [self.email],
-        #         template=template,
-        #         context=email_context
-        #     )
-        #     self.is_sent = True
-        #     self.save()
-        #     return True
-        return receivers
 
 class EmailingTransaction(models.Model):
 
@@ -141,30 +155,6 @@ class EmailingTransaction(models.Model):
     def __unicode__(self):
         return u"{0} - {1}".format(self.name, self.email)
 
-    def send(self, force=False):
-
-        if not self.is_sent:
-            template = self.template
-
-            activate_url = re.search(r'\{\{\s*activate_url\s*\}\}', template)
-            if activate_url:
-                template.replace()
-
-            email_context = {
-                'user': self,
-            }
-            email_context.update(context)
-            send_html_email(
-                subject,
-                settings.DEFAULT_NO_REPLY_EMAIL,
-                [self.email],
-                template=template,
-                context=email_context
-            )
-            self.is_sent = True
-            self.save()
-            return True
-        return False
 
 
 class EmailingTestEmail(models.Model):

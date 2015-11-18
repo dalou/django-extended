@@ -22,7 +22,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from django.utils.html import strip_tags
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import get_connection, EmailMultiAlternatives
 from django.contrib.auth import get_user_model
 
 from .models import *
@@ -45,6 +45,12 @@ class HtmlTemplateEmail(EmailMultiAlternatives):
         super(HtmlTemplateEmail, self).__init__(subject, text_template, sender, receivers, **kwargs)
         self.attach_alternative(html, "text/html")
 
+
+def send_mass_email(messages, **kwargs):
+    connection = get_connection()
+    connection.open()
+    connection.send_messages(messages)
+    connection.close()
 
 def send_html_email(subject, sender, receivers, html='', context={}, **kwargs):
     message = HtmlTemplateEmail(subject, html, sender, receivers, context, **kwargs)
