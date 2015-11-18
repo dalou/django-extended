@@ -1,0 +1,123 @@
+
+
+
+// grid(s=null, class='> *')
+// 	// +responsive(rs)
+// 	cl()
+// 	if s		
+// 		{class}		
+// 			float: left;
+// 			width: unit(100/s, '%');
+// 			margin-left: 0px !important;
+// 			margin-right: 0px !important;
+// 			padding-left: 0px !important;
+// 			padding-right: 0px !important;
+
+
+// Width Range
+wr(xs=100%, sm=xs, md=sm, lg=md)
+	w(xs);
+	@media screen-sm-min
+		w(sm);
+	@media screen-md-min
+		w(md);
+	@media screen-lg-min
+		w(lg)
+
+// Height Range
+hr(xs=100%, sm=xs, md=sm, lg=md)
+	h(xs);
+	@media screen-sm-min
+		h(sm);
+	@media screen-md-min
+		h(md);
+	@media screen-lg-min
+		h(lg)
+
+
+
+// col(n,s,dir=left)
+// 	float: dir;
+// 	width: unit(n/s * 100, '%');
+// 	dib();
+// 	position: relative;
+// 	min-height: 1px;
+// 	margin-left: 0px !important;
+// 	margin-right: 0px !important;
+// 	padding-left: 0px !important;
+// 	padding-right: 0px !important;
+
+
+// columnize(n=12, container='row', column='col', responsive=true)
+// 	container-name = '.' + container
+// 	{container-name}
+// 		cl();	
+// 		column-name = '.' + column + '-xs-' + 1
+// 		for i in 2..n
+// 			column-name = column-name + ',.' + column + '-sm-' + i
+// 			column-name = column-name + ',.' + column + '-md-' + i
+// 			column-name = column-name + ',.' + column + '-lg-' + i
+// 			column-name = column-name + ',.' + column + '-xl-' + i
+// 		{column-name}
+// 			fl(); dib();
+// 			position: relative;
+// 			min-height: 1px;
+// 			margin-left: 0px !important;
+// 			margin-right: 0px !important;
+// 			padding-left: 0px !important;
+// 			padding-right: 0px !important;
+
+		
+// 		@media screen-xs-min
+// 			column-name = '.' + column + '-xs-' + 1
+// 			for i in 2..n
+// 				column-name = column-name + ',.' + column + '-xs-' + i
+// 			{column-name}
+// 				width: unit(i/n * 100, '%');
+// 		@media screen-sm-min
+// 			column-name = '.' + column + '-sm-' + 1
+// 			for i in 2..n
+// 				column-name = column-name + ',.' + column + '-sm-' + i
+// 			{column-name}
+// 				width: unit(i/n * 100, '%');
+// 		@media screen-md-min
+// 			column-name = '.' + column + '-md-' + 1
+// 			for i in 2..n
+// 				column-name = column-name + ',.' + column + '-md-' + i
+// 			{column-name}
+// 				width: unit(i/n * 100, '%');
+// 		@media screen-lg-min
+// 			column-name = '.' + column + '-lg-' + 1
+// 			for i in 2..n
+// 				column-name = column-name + ',.' + column + '-lg-' + i
+// 			{column-name}
+// 				width: unit(i/n * 100, '%');
+// 		@media screen-xl-min
+// 			column-name = '.' + column + '-xl-' + 1
+// 			for i in 2..n
+// 				column-name = column-name + ',.' + column + '-xl-' + i
+// 			{column-name}
+// 				width: unit(i/n * 100, '%');
+
+// @media screen-xs-min
+// 	columnize(16, 'row', 'col-xs-')
+// @media screen-sm-min
+// 	columnize(16, 'row', 'col-sm-')
+// @media screen-md-min
+// 	columnize(16, 'row', 'col-md-')
+// @media screen-lg-min
+// 	columnize(16, 'row', 'col-lg-')
+// @media screen-xl-min
+// 	columnize(16, 'row', 'col-xl-')
+
+
+// use-columns()
+
+// 	make-grid-col-float(class)
+// 	  .col-{class}-1
+// 	    float left
+// 	  for i in 2..$grid-columns
+// 	    .col-{class}-{i}
+// 	      @extend .col-{class}-1
+
+// use-columns()

@@ -1,0 +1,35 @@
+/* Margin */
+mt(n)
+	margin-top unitx(n)
+mr(n)
+	margin-right unitx(n)
+mb(n)
+	margin-bottom unitx(n)
+ml(n)
+	margin-left unitx(n)
+mlr(l,r=l) 
+	ml(l); mr(r);
+mrl(r,l=r)
+	mlr(l,r);
+mtb(t,b=t) 
+	mt(t); mb(b);
+mbt(b,t=b)
+	mtb(t,b);
+m(t=null,r=t,b=t,l=r) 
+	if t==r and t==b and t==l
+		margin unitx(t);
+	else
+		if t==b and r==l
+			margin unitx(t) unitx(r);
+		else
+			margin unitx(t) unitx(r) unitx(b) unitx(l);
+ma()
+	m(arguments)
+mat()
+	mt(arguments)
+mar()
+	mr(arguments)
+mab()
+	mb(arguments)
+mal()
+	ml(arguments)

@@ -1,0 +1,87 @@
+
+
+
+screen-xs = '(max-width: %s)' % ((screen-xs-size))
+screen-xs-min = 'screen'
+screen-xs-max = '(max-width: %s)' % ((screen-xs-size))
+
+screen-sm = '(min-width: %spx) and (max-width: %spx)' % ((screen-sm-size)  ((screen-md-size - 1)))
+screen-sm-min = '(min-width: %s)' % ((screen-sm-size))
+screen-sm-max = '(max-width: %s)' % ((screen-sm-size - 1))
+
+screen-md = '(min-width: %spx) and (max-width: %spx)' % ((screen-md-size) ((screen-lg-size - 1)))
+screen-md-min = '(min-width: %s)' % ((screen-md-size ))
+screen-md-max = '(max-width: %s)' % ((screen-md-size - 1))
+
+screen-lg = '(min-width: %spx)' % ((screen-lg-size))
+screen-lg-min = '(min-width: %s)' % ((screen-lg-size))
+screen-lg-max = 'screen'
+
+
+responsive-visibilities()		
+	.hidden-xs-min
+		@media screen-xs-min  
+			display: none !important;
+	.hidden-xs-max
+		@media screen-xs-max  
+			display: none !important;
+
+	.hidden-sm-min
+		@media screen-sm-min  
+			display: none !important;
+	.hidden-sm-max
+		@media screen-sm-max  
+			display: none;
+
+	.hidden-md-min
+		@media screen-md-min  
+			display: none !important;
+	.hidden-md-max
+		@media screen-md-max  
+			display: none !important;
+
+	.hidden-lg-min
+		@media screen-lg-min  
+			display: none !important;
+	.hidden-lg-max
+		@media screen-lg-max  
+			display: none !important;
+
+
+// sizes = {
+// 	'320': (0 320), 
+// 	'480': (321 480), 
+// 	'640': (481 640), 
+// 	'768': (641 768), 
+// 	'1024': (769 1024), 
+// 	'1280': (1025 1280), 
+// 	'1680': (1281 1680)
+// }
+// for key, val in sizes
+// 	define('min-' + key, 'min-width: '+val[0]+'px');
+// 	define('max-' + key, '(max-width: '+val[1]+'px)')
+// 	define('fix-' + key, '(min-width: '+val[0]+'px) and (max-width: '+val[1]+'px)')
+
+// screen(s, s2=null)
+// 	if s2
+// 		m = ('min' + s + ' and ' + s2)
+// 		@media m
+// 			{block}
+// 	else
+// 		@media s
+// 			{block}
+// screen-range(s1, s2)
+// 	m = (s1 + ' and ' + s2)
+// 	@media m
+// 		{block}
+// screen-min(s)
+// 	m = ('min%s ' % s)
+// 	@media m
+// 		{block}
+// screen-max(s)
+// 	m = ('max%s' % s)
+// 	@media m
+// 		{block}
+
+
+

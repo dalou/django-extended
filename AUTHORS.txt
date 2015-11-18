@@ -1,0 +1,1 @@
+django-extended was written by Damien Autrusseau <autrusseau.damien@gmail.com>

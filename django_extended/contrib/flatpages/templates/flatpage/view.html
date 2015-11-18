@@ -1,0 +1,24 @@
+{% extends "main/layout.html" %}
+
+
+{% block title %}{{ flatpage.title }}{% endblock %}
+
+{% block meta_title %}{{ flatpage.meta_title }}{% endblock %}
+{% block meta_description %}{{ flatpage.meta_description }}{% endblock %}
+{% block meta_keywords %}{% endblock %}
+{% block meta_type %}article{% endblock %}
+
+
+{% block extrascripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block main %}
+
+<div class="flatpage-view">
+    <h1 class="flatpage-title">{{ flatpage.title }}</h1>
+    <section class="flatpage-section">
+        <div class="flatpage-content">{{ flatpage.content|safe }}</div>
+    </section>
+</div>
+{% endblock main %}

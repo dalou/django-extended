@@ -1,0 +1,217 @@
+/* Texts */
+
+@require 'variables'
+@require 'libs/*'
+
+
+
+
+
+ct(n)
+	content: n;
+/* Alignement */
+dib() { display: inline-block; }
+dtc() { display: table-cell; }
+di() { display: inline; }
+dt() { display: table; }
+db() { display: block; } bk() { db(); }
+dn() { display: none; } un() { dn(); }
+center() { float:none; margin: 0 auto; display: table; table-layout: fixed; }
+fl() { float: left; }
+fr() { float: right; }
+fn() { float: none; }
+clear() { clear: both; }
+cl()
+	zoom: 1;
+	&:before,
+	&:after
+		content: "";
+		display: table;
+	&:after
+		clear: both;
+
+vab()
+	vertical-align bottom
+vam()
+	vertical-align middle
+vat()
+	vertical-align top
+vh()
+	visibility hidden
+vv()
+	visibility visible
+/* Texts */
+ta(n) { text-align n }
+tac() { ta center }
+tar() { ta right }
+tal() { ta left }
+taj() { ta justify }
+tuc() { text-transform uppercase }
+tup() { tuc() }
+tdc(n) { text-decoration n }
+tdn() { tdc(none) }
+tdu() { tdc(underline) }
+tlo() { text-transform lowercase }
+tlc() { tlo() }
+cur(n) { cursor n }
+f(n) { font n }
+fw(n) { font-weight n }
+fwn() { fw(normal); }
+fwb() { fw(bold); }
+fwbr() { fw(bolder); }
+fs(n) 
+	font-size unitx(n)
+fy(n) { font-style n }
+fsi() { fy(italic) }
+fyi() { fsi() }
+ff(n) { font-family n }
+ls(n) { list-style n }
+lts(n) { letter-spacing unitx(n); }
+lsn() { ls(none) }
+
+tsh(n)
+	text-shadow: n;
+
+/* Sizes */
+w(n) { width: unitx(n); }
+mnw(n) { min-width: unitx(n); }
+mxw(n) { max-width: unitx(n); }
+w-min(n) { mnw(n); }
+w-max(n) { mxw(n); }
+
+h(n) { height: unitx(n); }
+mnh(n) { min-height: unitx(n); }
+mxh(n) { max-height: unitx(n); }
+h-min(n) { mnh(n); }
+h-max(n) { mxh(n); }
+
+wh(w, h=w)
+	width: unitx(w);
+	height: unitx(h);
+
+/* Borders */
+bt(n,s=false,c=false) 
+	if n and s and c
+		border-top: unitx(n) s c;
+	else
+		border-top-width: unitx(n);
+		if s
+			border-top-style: s;
+		if c
+			border-top-color: c;
+br(n,s=false,c=false) 
+	if n and s and c
+		border-right: unitx(n) s c;
+	else
+		border-right-width: unitx(n);
+		if s
+			border-right-style: s;
+		if c
+			border-right-color: c;
+bb(n,s=false,c=false) 
+	if n and s and c
+		border-bottom: unitx(n) s c;
+	else
+		border-bottom-width: unitx(n);
+		if s
+			border-bottom-style: s;
+		if c
+			border-bottom-color: c;
+bl(n,s=false,c=false) 
+	if n and s and c
+		border-left: unitx(n) s c;
+	else
+		border-left-width: unitx(n);
+		if s
+			border-left-style: s;
+		if c
+			border-left-color: c;
+bd(t,r=t,b=t,l=r,s=solid,c=black) 
+	bt(t,s,c); 
+	br(r,s,c); 
+	bb(b,s,c); 
+	bl(l,s,c);
+bc(c)
+	border-color: c;
+
+
+ws(n)
+	white-space: n;
+wsnw()
+	ws(nowrap);
+
+border-radius(t,r=t,b=t,l=r)
+	-webkit-border-radius: unitx(t) unitx(r) unitx(b) unitx(l);
+	-moz-border-radius: unitx(t) unitx(r) unitx(b) unitx(l);
+	border-radius: unitx(t) unitx(r) unitx(b) unitx(l);
+
+brad(t,r=t,b=t,l=r)
+	border-radius(t,r,b,l);
+rad(t,r=t,b=t,l=r)
+	brad(t,r,b,l);
+
+bg(n) { background: n; }
+bgc(n) { background-color: n; }
+bgi(n) { background-image: n; }
+bgs(n) { background-size: n; }
+bga(n) { background-attachment: n; }
+bgp(n) { background-position: n; }
+bgr(n) { background-repeat: n; }
+
+fg(n, filter=null, valuer=null) { color: n; }
+
+hide-text()
+	font: "0/0";
+	fg: transparent;
+	text-shadow: none;
+	bgc: transparent;
+	border: 0;
+
+
+/* Transitions */
+tr(n) 
+	-webkit-transition: n;
+	transition: n;
+ts(n) 
+	-ms-transform: n; /* Internet Explorer */
+	-moz-transform: n; /* Firefox */
+	-webkit-transform: n; /* Safari et Chrome */
+	-o-transform: n; /* Opera */
+
+tsh(n)
+	text-shadow: n;
+	-moz-text-shadow: n;
+	-webkit-text-shadow: n;
+
+box-shadow(n)
+	box-shadow: n;
+	-webkit-box-shadow: n; // iOS <4.3 & Android <4.1
+
+bs(n, n2=null, n3=null, n4=null, color=null)
+	if n and n2 and n3 and n4 and color	
+		box-shadow(unitx(n) unitx(n2) unitx(n3) unitx(n4) color);
+	else
+		box-shadow(n);
+op(op) 
+	opacity: op;
+  // IE8 filter
+
+lh(n)
+	line-height: unitx(n);
+
+plh()
+	::-webkit-input-placeholder 
+		{block}				
+	::-moz-placeholder 
+		{block}		
+		opacity: 1;	  
+	:-ms-input-placeholder 
+		{block}   
+	:-moz-placeholder 
+		{block}   
+
+bsbb()
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+

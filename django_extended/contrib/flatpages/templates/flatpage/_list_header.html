@@ -1,0 +1,11 @@
+{% if not flat %}
+    <ul class="flatpage-list flatpage-header">
+{% endif %}
+        {% for position in positions %}
+        <li class="flatpage-link">
+            <a href="{{ position.flatpage.get_url }}">{{ position.flatpage.link_name }}</a>
+        </li>
+        {% endfor %}
+{% if not flat %}
+    </ul>
+{% endif %}

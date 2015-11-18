@@ -1,0 +1,7 @@
+unitx(n)
+	if n is a 'null'
+		return ''
+	if n is a 'string' or n is a 'ident'
+		return n
+	else
+		return unit(n) is '' ? unit(n, 'px') : n;

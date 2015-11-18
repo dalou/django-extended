@@ -1,0 +1,30 @@
+{% if flat %}
+
+    {% for position in positions %}
+    <li class="flatpage-link">
+        <a href="{{ position.flatpage.get_url }}">{{ position.flatpage.link_name }}</a>
+    </li>
+    {% endfor %}
+
+{% else %}
+
+    <div class="flatpage-footer">
+        <div class="row">
+            {% for i in cols %}
+            <div class="col-md-2 col-sm-4 col-xs-6">
+                <ul class="flatpage-list ">
+                    {% for position in positions %}
+                    {% if position.order_col == i %}
+                    <li class="flatpage-link">
+                        <a href="{{ position.flatpage.get_url }}">{{ position.flatpage.link_name }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endif %}
+

@@ -1,0 +1,72 @@
+/* Positions */
+l(n)
+	left unitx(n)
+r(n)
+	right unitx(n)
+t(n)
+	top unitx(n)
+b(n) 
+	bottom unitx(n)
+z(n) 
+	z-index n 
+
+po(n, t=null,r=null,b=null,l=null,z=null) 
+	position n
+	if t is a 'unit' { t(t); }
+	if r is a 'unit' { r(r); }
+	if b is a 'unit' { b(b); } 
+	if l is a 'unit' { l(l); } 
+	if z is a 'unit' { z(z); } 
+
+ab(t=null,r=null,b=null,l=null,z=null) 
+	po absolute,t,r,b,l,z
+pa(t=null,r=null,b=null,l=null,z=null) 
+	po absolute,t,r,b,l,z
+
+ps() 
+	po static
+
+fx(t=null,r=null,b=null,l=null,z=null) 
+	po fixed,t,r,b,l,z
+
+rl(t=null,r=null,b=null,l=null,z=null) 
+	po relative,t,r,b,l,z
+
+/* overflow */
+oh() 
+	overflow hidden
+ov() 
+	overflow visible
+
+
+
+
+
+
+
+// mv(l,r=false) 
+// 	if !r
+// 		ml l
+// 		mr l
+// 	else
+// 		ml l
+// 		mr r
+// mh(t,b=false) 
+// 	if !b
+// 		mt t
+// 		mb t
+// 	else
+// 		mt t
+// 		mb b
+
+// m(t=false,r=false,b=false,l=false) 
+// 	if !r and !b and !l
+// 		if t is 'unit'
+// 			margin unitx(t)
+// 		else
+// 			margin t
+// 	else
+// 		if t is a 'unit' { mt(t); }
+// 		if r is a 'unit' { mr(r); }
+// 		if b is a 'unit' { mb(b); } 
+// 		if l is a 'unit' { ml(l); } 

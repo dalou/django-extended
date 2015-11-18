@@ -1,0 +1,49 @@
+/* Paddings */
+pt(n)
+	padding-top unitx(n)
+pr(n)
+	padding-right unitx(n)
+pb(n)
+	padding-bottom unitx(n)
+pl(n)
+	padding-left unitx(n)
+plr(l,r=l) 
+	pl(l); pr(r);
+prl(r,l=r)
+	plr(l,r);
+ptb(t,b=t) 
+	pt(t); pb(b);
+pbt(b,t=b)
+	ptb(t,b);
+
+p(t=null,r=t,b=t,l=r) 
+	if t==r and t==b and t==l
+		padding unitx(t);
+	else
+		if t==b and r==l
+			padding unitx(t) unitx(r);
+		else
+			padding unitx(t) unitx(r) unitx(b) unitx(l);
+	// if t and r and !b and !l
+	// 	padding unitx(t) unitx(r)
+
+	// else		
+	// 	if t and !r and !b and !l
+	// 		padding unitx(t) unitx(t) unitx(t) unitx(t)
+	// 	else
+	// 		if t is a 'unit' { pt(t); }
+	// 		if r is a 'unit' { pr(r); }
+	// 		if b is a 'unit' { pb(b); } 
+	// 		if l is a 'unit' { pl(l); } 
+
+	// for arg in arguments
+	// 	arg: arg;
+	// padding-top t
+	// padding-right t
+	// padding-bottom t
+	// padding-left t
+	// if !r and !b and !l
+	// 	if t is 'unit'
+	// 		padding unitx(t)
+	// 	else
+	// 		padding t
