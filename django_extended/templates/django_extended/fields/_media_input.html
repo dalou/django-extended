@@ -2,11 +2,11 @@
     {% if not required %}
         {{ clear }}
     {% endif %}
-    <input class="fields_bundle-media_input-file" {{ input_attrs|safe }} type="file" {% if value.is_image %}name="{{ name }}"{% endif %} accept="image/*" />
+    <input class="django_extended-media_input-file" {{ input_attrs|safe }} type="file" {% if value.is_image %}name="{{ name }}"{% endif %} accept="image/*" />
     <textarea type="text" {{ input_attrs|safe }} {% if not value.is_embed %}name="{{ name }}"{% endif %}></textarea>
 </span>
 
-<a class="fields_bundle-media_input {% if only_file %}fields_bundle-media_input-only_file{% endif %}"
+<a class="django_extended-media_input {% if only_file %}django_extended-media_input-only_file{% endif %}"
     id="div_{{ id }}"
     data-modal="#div_{{ id }}_modal"
     data-inputs="#div_{{ id }}_inputs"
@@ -14,22 +14,22 @@
     data-embed-types='{{ embed_types }}'
     >
 
-    <span class="fields_bundle-media_input-media {% if value %}active{% endif %}">
+    <span class="django_extended-media_input-media {% if value %}active{% endif %}">
 
-        <span class="fields_bundle-media_input-preview" {% if value.is_image %}style="background-image: url({{ value.url }});"{% endif %}>
+        <span class="django_extended-media_input-preview" {% if value.is_image %}style="background-image: url({{ value.url }});"{% endif %}>
             {{ value.html|safe }}
         </span>
-       <!--  <button type="button" class="btn btn-primary fields_bundle-media_input-button fields_bundle-media_input-change">
+       <!--  <button type="button" class="btn btn-primary django_extended-media_input-button django_extended-media_input-change">
             {{ change_message|default:"Changer"|safe }}
         </button>-->
         <span class="appicon appicon-edit"></span>
         <!-- {% if not required %}
-        <button type="button" class="btn btn-primary fields_bundle-media_input-button fields_bundle-media_input-remove">
+        <button type="button" class="btn btn-primary django_extended-media_input-button django_extended-media_input-remove">
             {{ remove_message|default:"Changer"|safe }}
         </button>
         {% endif %} -->
     </span>
-    <span class="fields_bundle-media_input-empty fields_bundle-media_input-change {% if not value %}active{% endif %}">
+    <span class="django_extended-media_input-empty django_extended-media_input-change {% if not value %}active{% endif %}">
 
         <span class="appicon appicon-media"></span>
         Ajouter un média
@@ -37,12 +37,12 @@
     </span>
 
     <div style="display:none;">
-        <div class="modal fields_bundle-media_input-modal" id="div_{{ id }}_modal">
+        <div class="modal django_extended-media_input-modal" id="div_{{ id }}_modal">
             <div class="modal-header">
                 Média
             </div>
             <div class="modal-body">
-                <button type="button" class="btn btn-primary fields_bundle-media_input-add-image">
+                <button type="button" class="btn btn-primary django_extended-media_input-add-image">
                     {% if not only_file %}
                         {{ "Image"|safe }}
                     {% else %}
@@ -53,8 +53,8 @@
                 </button>
                 {% if not only_file %}
                 <!-- <br/> -->
-                <span class="fields_bundle-media_input-or">ou</span>
-                <textarea class="form-control fields_bundle-media_input-add-embed"
+                <span class="django_extended-media_input-or">ou</span>
+                <textarea class="form-control django_extended-media_input-add-embed"
                     placeholder="Copiez collez une URL ou un code embed (youtube, dailymotion, soundcloud)"></textarea>
                 {% endif %}
             </div>

@@ -4,7 +4,7 @@ from django.db import models
 from django import forms
 from django.utils.text import capfirst
 
-from fields_bundle.forms import ColorField as ColorFormField, ColorInput
+from ..forms import ColorField as ColorFormField, ColorInput
 
 
 class ColorField(models.CharField):
@@ -22,6 +22,6 @@ class ColorField(models.CharField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.ColorField"])
+    add_introspection_rules([], ["^django_extended\.fields\.ColorField"])
 except ImportError:
     pass

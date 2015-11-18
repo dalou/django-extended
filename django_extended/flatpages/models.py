@@ -4,13 +4,13 @@ from django.db import models
 from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
 from django.utils.text import slugify
-from fields_bundle.fields import HTMLField
+from django_extended.fields import HTMLField
 from taggit_autosuggest.managers import TaggableManager as AutosuggestTaggableManager
 
 
 class FlatPagePosition(models.Model):
 
-    flatpage = models.ForeignKey("flatpage.FlatPage", verbose_name="Page statique", related_name="positions")
+    flatpage = models.ForeignKey("django_extended.FlatPage", verbose_name="Page statique", related_name="positions")
     PLACEMENT_HEADER = 'HEADER'
     PLACEMENT_FOOTER = 'FOOTER'
     PLACEMENT_CHOICES = (
@@ -49,7 +49,7 @@ class FlatPage(models.Model):
 
     meta_title = models.CharField(u"Meta - Titre", max_length=254, blank=True, null=True)
     meta_description = models.CharField(u"Meta - Description", max_length=254, blank=True, null=True)
-    tags = AutosuggestTaggableManager(verbose_name="Tags", help_text=u"Séparez par une virgule ou utilisez la touche tabulation.", blank=True)
+    tags = AutosuggestTaggableManager(verbose_name="Tags", help_text=u"Séparez par une virgule ou utilisez la touche tabulation.", related_name="extended_flatpages", blank=True)
 
     content = HTMLField(u"Contenu", blank=True)
     is_active = models.BooleanField(default=True, verbose_name=u"Activée ?")
@@ -104,9 +104,7 @@ class FlatPage(models.Model):
 
 
 
-class Settings(models.Model):
-
-
+class FlatPageSettings(models.Model):
 
     class Meta:
         verbose_name = u"Paramètre"

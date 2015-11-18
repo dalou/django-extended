@@ -53,16 +53,16 @@ class IconInput(forms.widgets.TextInput):
 
         html = """<style>
 
-            .fields_bundle-icon-widget {
+            .django_extended-icon-widget {
                 color:rgb(102, 71, 30); margin:5px; text-decoration: none; cursor: pointer;   display: inline-block;
                 font-size: 21px;
                 transition: all 0.4s ease-out;
             }
-            .fields_bundle-icon-widget:hover {
+            .django_extended-icon-widget:hover {
                 text-decoration: none; color:rgb(30, 31, 102);   display: inline-block;
                 transition: all 0.4s ease-out;
             }
-            .fields_bundle-icon-widget.active {
+            .django_extended-icon-widget.active {
                 color:green; font-size: 25px; font-weight: bold;
             }
 
@@ -93,7 +93,7 @@ class IconInput(forms.widgets.TextInput):
             ):
                 classname = item.group(1)
                 classname = prefix + ' ' + classname
-                contents += """<a class="fields_bundle-icon-widget %s" data-value="%s"><i class="%s"></i></a>""" % (
+                contents += """<a class="django_extended-icon-widget %s" data-value="%s"><i class="%s"></i></a>""" % (
                     "active" if value == classname else "",
                     classname,
                     classname
@@ -111,8 +111,8 @@ class IconInput(forms.widgets.TextInput):
                 $(document).ready(function() {
 
                     $( "#icons-%(id)s > div.tabs" ).tabs();
-                    $(document).on('click', '#icons-%(id)s .fields_bundle-icon-widget', function() {
-                         $('.fields_bundle-icon-widget.active').removeClass('active')
+                    $(document).on('click', '#icons-%(id)s .django_extended-icon-widget', function() {
+                         $('.django_extended-icon-widget.active').removeClass('active')
                          $(this).addClass('active');
                          $('#icons-%(id)s input').val($(this).data('value'))
                     });

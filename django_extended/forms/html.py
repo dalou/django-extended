@@ -4,7 +4,7 @@ import copy
 import uuid
 import urlparse
 from django.conf import settings
-import fields_bundle.settings
+import django_extended.settings
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.admin import widgets as admin_widgets
@@ -53,11 +53,11 @@ class HtmlInput(forms.Textarea):
 
     class Media:
         js = [
-            fields_bundle.settings.FIELDS_BUNDLE_TINYMCE_URL,
-            'fields_bundle/html_input.js',
+            django_extended.settings.EXTENDED_TINYMCE_URL,
+            'django_extended/fields/html_input.js',
         ]
         css = {
-            'all': ('fields_bundle/html_input.css', )
+            'all': ('django_extended/fields/html_input.css', )
         }
 
     def __init__(self, attrs=None, tinymce=None, inline=False):
@@ -89,7 +89,7 @@ class HtmlInput(forms.Textarea):
         return config_json
 
     def get_tinymce_config(self, name, attrs):
-        config = copy.deepcopy(fields_bundle.settings.FIELDS_BUNDLE_TINYMCE_DEFAULT_CONFIG)
+        config = copy.deepcopy(django_extended.settings.EXTENDED_TINYMCE_DEFAULT_CONFIG)
         config.update(self.tinymce)
         # if mce_config['mode'] == 'exact':
         #
@@ -147,12 +147,12 @@ class HtmlInput(forms.Textarea):
             'name' : name,
             'settings' : self.get_tinymce_config(name, attrs)
         }
-        flatattrs['data-fields_bundle-html_input'] = self.get_config_json(config)
+        flatattrs['data-django_extended-html_input'] = self.get_config_json(config)
 
 
         if self.inline:
 
-            html = [u"""<div class="fields_bundle-tinymce_inline">
+            html = [u"""<div class="django_extended-tinymce_inline">
                 <div id="div_inline_%s" placeholder="%s">%s</div>
                 <div style="display:none;">
                     <textarea%s>%s</textarea>

@@ -1,0 +1,9 @@
+.django_extended-media_input-media { position: relative; text-align: center; display: inline-block; }
+.django_extended-media_input-button { opacity:0; }
+.django_extended-media_input-preview {  }
+.django_extended-media_input-media:hover .django_extended-media_input-button { opacity:1; }
+.django_extended-media_input > span { display:none; }
+.django_extended-media_input .active { display:block; }
+.django_extended-media_input-change { margin: auto; }
+.django_extended-media_input-remove { position:absolute; bottom:5px; left:5px; right:0px; margin: auto; }
+.django_extended-media_input-modal {}

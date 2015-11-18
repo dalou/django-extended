@@ -10,7 +10,7 @@ from django.db.models import ImageField
 from django.db.models.fields.files import ImageFieldFile
 from django.core.files.base import ContentFile
 
-from fields_bundle.forms import CroppedImageField as CroppedImageFormField
+from ..forms import CroppedImageField as CroppedImageFormField
 
 IMAGE_FIELD_DELIMITER = "?"
 

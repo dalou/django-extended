@@ -4,7 +4,7 @@ from django.db import models
 from django import forms
 from django.utils.text import capfirst
 
-from fields_bundle.forms import IconField as IconFormField, IconInput
+from ..forms import IconField as IconFormField, IconInput
 
 
 class IconField(models.CharField):
@@ -22,6 +22,6 @@ class IconField(models.CharField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.IconField"])
+    add_introspection_rules([], ["^django_extended\.fields\.IconField"])
 except ImportError:
     pass

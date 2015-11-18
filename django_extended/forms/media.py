@@ -31,7 +31,7 @@ EMBED_TYPES = {
             '(youtube|youtu|youtube-nocookie)\.(com|be)/'
             '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?\s"]{11})',
 
-            '<iframe class="fields_bundle-media" src="'
+            '<iframe class="django_extended-media" src="'
             'https://www.youtube.com/embed/\\6?controls=0&amp;showinfo=0"'
             'scrolling="no" frameborder="no" allowfullscreen></iframe>'
         )
@@ -39,28 +39,28 @@ EMBED_TYPES = {
     'soundcloud': [
         (
             r'(http[s]?\:\/\/w\.soundcloud\.com\/player\/\?url=([^"]+))',
-            '<iframe class="fields_bundle-media" src="https://w.soundcloud.com/player/?url=\\2" scrolling="no" frameborder="no" allowfullscreen></iframe>'
+            '<iframe class="django_extended-media" src="https://w.soundcloud.com/player/?url=\\2" scrolling="no" frameborder="no" allowfullscreen></iframe>'
         ),
         (
             r'(http[s]?\:\/\/soundcloud\.com\/[\d\w\-_]+/[\d\w\-_]+)',
-            '<iframe class="fields_bundle-media" src="https://w.soundcloud.com/player/?url=\\1" scrolling="no" frameborder="no" allowfullscreen></iframe>'
+            '<iframe class="django_extended-media" src="https://w.soundcloud.com/player/?url=\\1" scrolling="no" frameborder="no" allowfullscreen></iframe>'
         )
     ]
 }
 
 
 class MediaInput(forms.widgets.ClearableFileInput):
-    template_name = 'fields_bundle/_media_input.html'
+    template_name = 'django_extended/fields/_media_input.html'
     change_message = "Changer"
     empty_message = "Changer"
     class Media:
         css = {
             'all': (
-                'fields_bundle/medias.css',
+                'django_extended/fields//media.css',
             )
         }
         js = (
-            'fields_bundle/medias.js',
+            'django_extended/fields//media.js',
         )
 
 
@@ -134,8 +134,8 @@ class MediaField(forms.FileField):
         # required = kwargs.get('required', False)
         #widget = kwargs.pop('widget', None)
         # widget = MediaInput( attrs={
-        #     'class': 'fields_bundle-media_field',
-        #     # 'data-fields_bundle-media_field': self.image_field,
+        #     'class': 'django_extended-media_field',
+        #     # 'data-django_extended-media_field': self.image_field,
         #     # 'style': 'display:none;',
         # })
         # kwargs['widget'] = widget

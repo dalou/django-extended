@@ -14,8 +14,8 @@ from django.db.models.fields.files import ImageFieldFile, ImageFile, FieldFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.base import ContentFile
 
-from fields_bundle.forms import MediaField as MediaFormField, MediaInput
-from fields_bundle.forms.media import EMBED_TYPES
+from ..forms import MediaField as MediaFormField, MediaInput
+from ..forms.media import EMBED_TYPES
 
 IMAGE_FIELD_DELIMITER = "?"
 
@@ -36,7 +36,7 @@ class MediaFieldImage(FieldFile):
     def _get_html(self):
         if self.name and not self.type in self.field.authorized_types:
             return ''
-        return """<img class="fields_bundle-media" src="%s" />""" % self.url
+        return """<img class="django_extended-media" src="%s" />""" % self.url
     html = property(_get_html)
 
     def save(self, name, content, save=True):
@@ -168,13 +168,13 @@ class MediaFieldEmbed(object):
     #         return None
 
     #     if self.is_image():
-    #         return """<img class="fields_bundle-media" src="%s" />""" % self.name
+    #         return """<img class="django_extended-media" src="%s" />""" % self.name
     #     elif self.type in ['youtube']:
-    #         return """<iframe class="fields_bundle-media" src="%s" frameborder="0" allowfullscreen></iframe>""" % self.name
+    #         return """<iframe class="django_extended-media" src="%s" frameborder="0" allowfullscreen></iframe>""" % self.name
     #     elif self.type in ['soundcloud']:
-    #         return """<iframe class="fields_bundle-media" src="%s" scrolling="no" frameborder="0" allowfullscreen></iframe>""" % self.name
+    #         return """<iframe class="django_extended-media" src="%s" scrolling="no" frameborder="0" allowfullscreen></iframe>""" % self.name
     #     else:
-    #         return """<iframe class="fields_bundle-media" src="%s" scrolling="no" frameborder="0" allowfullscreen></iframe>""" % self.name
+    #         return """<iframe class="django_extended-media" src="%s" scrolling="no" frameborder="0" allowfullscreen></iframe>""" % self.name
     # html = property(_get_html)
 
     # def save(self, name, content, save=True):

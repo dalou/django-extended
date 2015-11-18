@@ -6,7 +6,7 @@ from django.utils.text import capfirst
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# from fields_bundle.forms import PriceField as PriceFormField, PriceInput
+# from django_extended.forms import PriceField as PriceFormField, PriceInput
 
 
 class PercentField(models.PositiveIntegerField):
@@ -23,6 +23,6 @@ class PercentField(models.PositiveIntegerField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.PercentField"])
+    add_introspection_rules([], ["^django_extended\.fields\.PercentField"])
 except ImportError:
     pass

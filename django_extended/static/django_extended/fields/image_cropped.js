@@ -12,13 +12,13 @@
 
 function fieldsBundleImageCropped($container, self)
 {
-    if(!$container[0].fields_bundle_image_cropped)
+    if(!$container[0].django_extended_image_cropped)
     {
-        $container[0].fields_bundle_image_cropped = true;
+        $container[0].django_extended_image_cropped = true;
         self = this;
         self.$container = $container
         self.$input = self.$container.find('input[type=file]');
-        self.$img = self.$container.find('.fields_bundle-image_cropped-image img');
+        self.$img = self.$container.find('.django_extended-image_cropped-image img');
 
         if(self.$input.length && self.$input.attr('id').indexOf('__prefix__') == -1)
         {
@@ -27,14 +27,14 @@ function fieldsBundleImageCropped($container, self)
             {
                 self.$form.attr('enctype', 'multipart/form-data')
             }
-            self.$container.on('click', '.fields_bundle-image_cropped-change', function()
+            self.$container.on('click', '.django_extended-image_cropped-change', function()
             {
                 self.$input.click();
             });
-            self.$container.on('click', '.fields_bundle-image_cropped-remove', function()
+            self.$container.on('click', '.django_extended-image_cropped-remove', function()
             {
-                self.$container.find('.fields_bundle-image_cropped-image').removeClass('active');
-                self.$container.find('.fields_bundle-image_cropped-empty').addClass('active');
+                self.$container.find('.django_extended-image_cropped-image').removeClass('active');
+                self.$container.find('.django_extended-image_cropped-empty').addClass('active');
                 self.$container.find('input[type=checkbox]').prop('checked', true);
             });
 
@@ -54,9 +54,9 @@ function fieldsBundleImageCropped($container, self)
 fieldsBundleImageCropped.prototype.replace_image = function(src, self)
 {
     self = this;
-    self.$container.find('.fields_bundle-image_cropped-image img').attr('src', src);
-    self.$container.find('.fields_bundle-image_cropped-image').addClass('active');
-    self.$container.find('.fields_bundle-image_cropped-empty').removeClass('active');
+    self.$container.find('.django_extended-image_cropped-image img').attr('src', src);
+    self.$container.find('.django_extended-image_cropped-image').addClass('active');
+    self.$container.find('.django_extended-image_cropped-empty').removeClass('active');
     self.$container.find('input[type=checkbox]').prop('checked', false);
 
 }
@@ -113,13 +113,13 @@ fieldsBundleImageCropped.prototype.input_change = function(self)
 
 $(document).ready(function(CLASS_VAR, DATA_VAR, INIT, CHANGE_IMAGE, REPLACE, APPLY)
 {
-    $(document).on('mouseenter', '.fields_bundle-image_cropped', function()
+    $(document).on('mouseenter', '.django_extended-image_cropped', function()
     {
         new fieldsBundleImageCropped($(this));
     });
 
 
-    CLASS_VAR = 'fields_bundle-croppedimage';
+    CLASS_VAR = 'django_extended-croppedimage';
     DATA_VAR = '[data-'+CLASS_VAR+']';
     APPLY = function($input, $input_cropped, src, $img, $container)
     {
@@ -144,7 +144,7 @@ $(document).ready(function(CLASS_VAR, DATA_VAR, INIT, CHANGE_IMAGE, REPLACE, APP
             coords = null
         }
         // $img = $input_cropped.parent().find('img')
-        $container = $input_cropped[0].$fields_bundle_cropped_image_container;
+        $container = $input_cropped[0].$django_extended_cropped_image_container;
         if($container)
         {
             $img = $container.find('img')
@@ -177,14 +177,14 @@ $(document).ready(function(CLASS_VAR, DATA_VAR, INIT, CHANGE_IMAGE, REPLACE, APP
     REPLACE = function($input, $input_cropped, src)
     {
         // $img = $input_cropped.parent().find('img')
-        var $container = $input_cropped[0].$fields_bundle_cropped_image_container;
+        var $container = $input_cropped[0].$django_extended_cropped_image_container;
         if($container)
         {
             $container.find('img').cropper('destroy').remove();
         }
         $container = $('<div style="width:100%;"><img /></div>');
         $container.css({ maxWidth: 500 });
-        $input_cropped[0].$fields_bundle_cropped_image_container = $container;
+        $input_cropped[0].$django_extended_cropped_image_container = $container;
 
         $input_cropped.before($container)
         console.log($container)

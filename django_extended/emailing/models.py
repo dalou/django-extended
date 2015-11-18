@@ -16,7 +16,7 @@ from .utils import *
 
 
 
-class UserActivationToken(models.Model):
+class EmailingUserActivationToken(models.Model):
     email = models.EmailField(u"Adresse email", max_length=254, unique=True, db_index=True)
     token = models.CharField(u"Token d'activation", max_length=64, unique=True, db_index=True)
     is_used = models.BooleanField(u'Utilisé ?', default=False)
@@ -28,7 +28,7 @@ class UserActivationToken(models.Model):
         if not self.token:
             bits = [self.email, str(random.SystemRandom().getrandbits(512))]
             self.token =  self._hash_func("".join(bits).encode("utf-8")).hexdigest()
-        super(UserActivationToken, self).save(**kwargs)
+        super(EmailingUserActivationToken, self).save(**kwargs)
 
     def activate_user(self, user):
         if not user.is_active:
@@ -54,7 +54,7 @@ class UserActivationToken(models.Model):
         return True
 
 
-class Email(models.Model):
+class Emailing(models.Model):
     date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
     name = models.CharField(u"Nom", max_length=254)
     subject = models.CharField(u"Sujet du mail", max_length=254, blank=True, null=True)
@@ -126,9 +126,9 @@ class Email(models.Model):
         #     return True
         return receivers
 
-class EmailTransaction(models.Model):
+class EmailingTransaction(models.Model):
 
-    email = models.ForeignKey('emailing.Email')
+    email = models.ForeignKey('django_extended.Emailing')
     date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
     receiver = models.EmailField(u"Adresse email", max_length=254)
     is_sent = models.BooleanField(u"Envoyé ?", default=False)
@@ -167,7 +167,7 @@ class EmailTransaction(models.Model):
         return False
 
 
-class TestEmail(models.Model):
+class EmailingTestEmail(models.Model):
     email = models.EmailField(u"Adresse email", max_length=254)
 
 

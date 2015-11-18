@@ -30,6 +30,6 @@ class HtmlField(HTMLField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.HtmlField"])
+    add_introspection_rules([], ["^django_extended\.fields\.HtmlField"])
 except ImportError:
     pass

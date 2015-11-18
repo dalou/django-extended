@@ -4,7 +4,7 @@ from django.db import models
 from django import forms
 from django.utils.text import capfirst
 
-from fields_bundle.forms import PriceField as PriceFormField, PriceInput
+from ..forms import PriceField as PriceFormField, PriceInput
 
 
 class PriceField(models.DecimalField):
@@ -23,6 +23,6 @@ class PriceField(models.DecimalField):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.PriceField"])
+    add_introspection_rules([], ["^django_extended\.fields\.PriceField"])
 except ImportError:
     pass

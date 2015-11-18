@@ -1,16 +1,16 @@
 (function ($)
 {
-    function fields_bundle_load_html_input($input, config, id)
+    function django_extended_load_html_input($input, config, id)
     {
-        if($input[0].fields_bundle_load_html_input_loaded)
+        if($input[0].django_extended_load_html_input_loaded)
         {
             return;
         }
         if ($input.parents('.empty-form').length == 0 &&
             $input.parents('.form-__prefix__').length == 0)
         {
-            $input[0].fields_bundle_load_html_input_loaded = true;
-            config = $input.data('fields_bundle-html_input');
+            $input[0].django_extended_load_html_input_loaded = true;
+            config = $input.data('django_extended-html_input');
             if(!config.apply_format)
             {
                 config.apply_format = 'html'
@@ -88,22 +88,22 @@
 
     $(function ()
     {
-        $('[data-fields_bundle-html_input]').each(function(i, self)
+        $('[data-django_extended-html_input]').each(function(i, self)
         {
-            fields_bundle_load_html_input($(self));
+            django_extended_load_html_input($(self));
         });
-        // $(document).on('mousenter', '[data-fields_bundle-html_input]', function(self)
+        // $(document).on('mousenter', '[data-django_extended-html_input]', function(self)
         // {
-        //     fields_bundle_load_html_input($(this));
+        //     django_extended_load_html_input($(this));
         // });
 
         $(document).on('mouseup', function(self)    {
             setTimeout(function()
             {
                 // We have to wait until the inline is added
-                $('[data-fields_bundle-html_input]').each(function(i, self)
+                $('[data-django_extended-html_input]').each(function(i, self)
                 {
-                    fields_bundle_load_html_input($(self));
+                    django_extended_load_html_input($(self));
                 });
             }, 0);
         });
@@ -148,7 +148,7 @@
 //         {
 //             done = true
 //             // callback function provided as param
-//             fields_bundle_load_html_input();
+//             django_extended_load_html_input();
 //             console.log('load')
 //             script.onload = script.onreadystatechange = null;
 //             head.removeChild(script);
@@ -158,5 +158,5 @@
 // }
 // else
 // {
-//     fields_bundle_load_html_input();
+//     django_extended_load_html_input();
 // }

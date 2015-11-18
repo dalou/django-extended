@@ -22,6 +22,6 @@ class UUIDField(models.CharField) :
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^fields_bundle\.fields\.UUIDField"])
+    add_introspection_rules([], ["^django_extended\.fields\.UUIDField"])
 except:
     pass

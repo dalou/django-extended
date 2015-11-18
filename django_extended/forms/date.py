@@ -48,9 +48,9 @@ class BaseDateInput(object):
 
     class Media:
         css = {
-            'all': (settings.STATIC_URL + 'fields_bundle/jquery.datepicker.css',)
+            'all': (settings.STATIC_URL + 'django_extended/jquery.datepicker.css',)
         }
-        js = (settings.STATIC_URL + 'fields_bundle/jquery.datetimepicker.js',)
+        js = (settings.STATIC_URL + 'django_extended/jquery.datetimepicker.js',)
 
     input_type = 'date'
 

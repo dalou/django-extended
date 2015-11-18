@@ -23,18 +23,18 @@ logger = logging.getLogger(__name__)
 
 
 class ImageInput(OriginalFileInput):
-    template_name = 'fields_bundle/_image_input.html'
+    template_name = 'django_extended/_image_input.html'
 
 
 class CroppedImageInput(forms.widgets.TextInput):
     class Media:
         css = {
             'all': (
-                settings.STATIC_URL + 'fields_bundle/image_cropped.css',
+                settings.STATIC_URL + 'django_extended/image_cropped.css',
             )
         }
         js = (
-            settings.STATIC_URL + 'fields_bundle/image_cropped.js',
+            settings.STATIC_URL + 'django_extended/image_cropped.js',
             # settings.STATIC_URL + 'js/cropper.js',
         )
 
@@ -60,7 +60,7 @@ class CroppedImageField(forms.CharField):
         # if widget == AdminFileWidget or isinstance(widget, AdminFileWidget):
         widget = CroppedImageInput( attrs={
             'class': 'image-croppable',
-            'data-fields_bundle-croppedimage': self.image_field,
+            'data-django_extended-croppedimage': self.image_field,
             'style': 'display:none;',
         })
         kwargs['widget'] = widget
