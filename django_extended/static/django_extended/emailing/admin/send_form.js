@@ -42,7 +42,7 @@ $(document).ready(function($textarea, $pre, source_editor, $preview, set_preview
 
     set_preview = function() {
         $preview.contents().find('html').html(source_editor.getValue());
-        $preview.css({ height:$preview.contents().height() });
+        $preview.css({ height:$preview.contents().find('body').height() });
     }
 
     if(source_editor.getValue().length > 200)

@@ -95,7 +95,7 @@ class Emailing(models.Model):
         verbose_name_plural = u"Emails groupés"
         ordering = ('-date_created',)
 
-    def __unicode__(self):
+    def __repr__(self):
         sent = ""
         if self.send_count > 0:
             sent = u" (Envoyé)"
@@ -106,6 +106,8 @@ class Emailing(models.Model):
         final_receivers = []
         if self.pk:
             activate_url = re.search(r'\*\|ACTIVATE_URL\|\*', self.template)
+            archive_url = re.search(r'\*\|ARCHIVE\|\*', self.template)
+            mc_subject = re.search(r'\*\|MC:SUBJECT\|\*', self.template)
 
             # TODO replace mailchimp var on self.template
             template = set_mailchimp_vars(self.template)
@@ -123,6 +125,12 @@ class Emailing(models.Model):
                     if activate_url:
                         activation_token, created = EmailingUserActivationToken.objects.get_or_create(email=receiver)
                         html = html.replace(activate_url.group(0), activation_token.get_activate_url() )
+
+                    # if archive_url:
+                    #     html = html.replace(archive_url.group(0), self. )
+
+                    if mc_subject:
+                        html = html.replace(mc_subject.group(0), self.subject )
 
                     if not test:
                         transaction, created = EmailingTransaction.objects.get_or_create(
