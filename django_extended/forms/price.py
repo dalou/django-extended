@@ -93,7 +93,7 @@ class PriceWidget(forms.widgets.TextInput):
         # css = {
         #     'all': ('pretty.css',)
         # }
-        js = (settings.STATIC_URL + 'django_extended/prices.js', )
+        js = (settings.STATIC_URL + 'django_extended/forms/price.js', )
 
     currency = DEFAULT_CURRENCY
 

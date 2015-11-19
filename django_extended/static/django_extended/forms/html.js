@@ -2,6 +2,7 @@
 {
     function django_extended_load_html_input($input, config, id)
     {
+
         if($input[0].django_extended_load_html_input_loaded)
         {
             return;

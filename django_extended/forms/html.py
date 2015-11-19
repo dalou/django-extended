@@ -54,10 +54,10 @@ class HtmlInput(forms.Textarea):
     class Media:
         js = [
             django_extended.settings.EXTENDED_TINYMCE_URL,
-            'django_extended/forms/html_input.js',
+            'django_extended/forms/html.js',
         ]
         css = {
-            'all': ('django_extended/forms/html_input.css', )
+            'all': ('django_extended/forms/html.css', )
         }
 
     def __init__(self, attrs=None, tinymce=None, inline=False):
