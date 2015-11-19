@@ -109,10 +109,6 @@ class Emailing(models.Model):
             archive_url = re.search(r'\*\|ARCHIVE\|\*', self.template)
             mc_subject = re.search(r'\*\|MC:SUBJECT\|\*', self.template)
 
-            # TODO replace mailchimp var on self.template
-            template = clean_html_for_email(self.template)
-            template = set_mailchimp_vars(template)
-
             receivers = self.receivers_test if test else self.receivers
             receivers = receivers.split(',')
             messages = []
@@ -121,7 +117,8 @@ class Emailing(models.Model):
                 receiver = receiver.strip()
                 if is_valid_email(receiver):
 
-                    html = template
+                    html = self.template
+                    html = set_mailchimp_vars(html)
 
                     if activate_url:
                         activation_token, created = EmailingUserActivationToken.objects.get_or_create(email=receiver)
@@ -132,6 +129,8 @@ class Emailing(models.Model):
 
                     if mc_subject:
                         html = html.replace(mc_subject.group(0), self.subject )
+
+                    html = clean_html_for_email(html)
 
                     if not test:
                         transaction, created = EmailingTransaction.objects.get_or_create(
