@@ -51,9 +51,9 @@ class EmailingAdmin(admin.ModelAdmin):
     form = EmailingForm
 
 
-    def get_receivers(self):
-        receivers = self.receivers.split(',')
-        return """%s destinataires réels : %s [..]""" % ( len(receivers), receivers[0:10])
+    def get_receivers(self, obj):
+        receivers = obj.receivers.split(',')
+        return u"""%s destinataires réels : %s [..]""" % ( len(receivers), ", ".join(receivers[0:10]))
 
     def get_changeform_initial_data(self, request):
 
