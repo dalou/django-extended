@@ -98,7 +98,7 @@ class HtmlInput(forms.Textarea):
         config['placeholder'] = attrs.get('placeholder', '')
 
         config['language'] = None
-        config['language_url'] = settings.STATIC_URL + 'vendors/tinymce/langs/fr.js'
+        config['language_url'] = settings.STATIC_URL + 'django_extended/vendors/tinymce/langs/fr.js'
 
         if self.inline:
             config['inline'] = True

@@ -5,7 +5,7 @@ try:
 
     class DefaultConfig(AppConfig):
         name = 'django_extended'
-        verbose_name = u"Django extended"
+        verbose_name = u"Extensions"
 
         def ready(self):
 

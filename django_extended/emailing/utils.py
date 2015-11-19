@@ -69,3 +69,18 @@ def random_token(extra=None, hash_func=hashlib.sha256):
         extra = []
     bits = extra + [str(random.SystemRandom().getrandbits(512))]
     return hash_func("".join(bits)).hexdigest()
+
+
+
+def set_mailchimp_vars(template):
+    template = template.replace('*|CURRENT_YEAR|*', str(datetime.date.today().year) )
+    return template
+
+
+
+
+
+
+
+
+

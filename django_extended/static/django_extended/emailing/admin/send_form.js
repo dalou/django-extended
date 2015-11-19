@@ -1,5 +1,5 @@
 
-$(document).ready(function($textarea) {
+$(document).ready(function($textarea, $pre, source_editor, $preview, set_preview) {
 
 
     $textarea = $('<textarea id="id_template" name="template"></textarea>')
@@ -21,4 +21,32 @@ $(document).ready(function($textarea) {
     $textarea.val(source_editor.getValue());
 
     $parent.append($textarea)
+
+    $pre = $textarea.prev()
+
+    $preview = $('<iframe noframeborder="on"></iframe>').css({ width:'100%', border:0 }).hide();
+    $pre.before($preview);
+
+    $preview.before($('<a class="btn">Aperçu</a>').on('click', function()
+    {
+        $pre.hide();
+        $preview.show();
+        set_preview();
+    }))
+    $preview.before($('<a class="btn">Editer</a>').on('click', function()
+    {
+        $pre.show();
+        $preview.hide();
+        $(window).resize();
+    }))
+
+    set_preview = function() {
+        $preview.contents().find('html').html(source_editor.getValue());
+        $preview.css({ height:$preview.contents().height() });
+    }
+
+    if(source_editor.getValue().length > 200)
+    {
+        set_preview();
+    }
 });

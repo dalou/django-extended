@@ -9,7 +9,7 @@
 
 {% block extrahead %}
     {{ block.super }}
-    <script src="{% static 'emailing/admin/send_form.js' %}"></script>
+    <script src="{% static 'django_extended/emailing/admin/send_form.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/ace.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.1.9/mode-html.js"></script>
 {% endblock %}
@@ -17,6 +17,8 @@
 {% block submit_buttons_bottom %}
 
 <div class="submit-row clearfix">
+    {{ receivers }}
+   {{ receivers|length }} emails prêt à l'envois
   <button type="submit" class="btn btn-high btn-info" name="_continue">Enregistrer</button>
   <button type="submit" name="_sendtest" class="btn">Enregistrer et envoyer un test</button>
   <button onclick="return confirm('Attention les envois de mails sont rééls, confirmer ?');" type="submit" name="_sendreal" class="btn btn-danger">Enregistrer et envoyer !</button>

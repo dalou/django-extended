@@ -96,7 +96,11 @@ class Emailing(models.Model):
         ordering = ('-date_created',)
 
     def __unicode__(self):
-        return u"{0} - {1}".format(self.name, self.subject)
+        sent = ""
+        if self.send_count > 0:
+            sent = u" (Envoyé)"
+        return u"{0} - {1}{2}".format(self.name, self.subject, sent)
+
 
     def send(self, force=False, test=True):
         final_receivers = []
@@ -104,6 +108,7 @@ class Emailing(models.Model):
             activate_url = re.search(r'\*\|ACTIVATE_URL\|\*', self.template)
 
             # TODO replace mailchimp var on self.template
+            template = set_mailchimp_vars(self.template)
 
             receivers = self.receivers_test if test else self.receivers
             receivers = receivers.split(',')
@@ -113,19 +118,20 @@ class Emailing(models.Model):
                 receiver = receiver.strip()
                 if is_valid_email(receiver):
 
-                    html = self.template
+                    html = template
 
                     if activate_url:
-                        print activate_url, activate_url.group(0)
-
                         activation_token, created = EmailingUserActivationToken.objects.get_or_create(email=receiver)
                         html = html.replace(activate_url.group(0), activation_token.get_activate_url() )
 
                     if not test:
-                        transaction, created = EmailingTransaction.objects.get_or_create(receiver=receiver, email=self)
+                        transaction, created = EmailingTransaction.objects.get_or_create(
+                            receiver=receiver,
+                            emailing=self
+                        )
                     else:
                         created = True
-                    if created and transaction.send_count == 0:
+                    if created or transaction.send_count == 0:
                         message = HtmlTemplateEmail(
                             subject=self.subject,
                             sender=self.sender,
@@ -156,12 +162,15 @@ class EmailingTransaction(models.Model):
     send_count = models.IntegerField(u"Compteur d'envois", default=0)
 
     class Meta:
-        verbose_name = u"Transaction"
-        verbose_name_plural = u"Transactions"
+        verbose_name = u"Email - Transaction"
+        verbose_name_plural = u"Email - Transactions"
         ordering = ('-date_created',)
 
     def __unicode__(self):
-        return u"{0} - {1}".format(self.name, self.email)
+        sent = ""
+        if self.send_count > 0:
+            sent = u" (Envoyé)"
+        return u"{0}{1}".format(self.emailing.name, sent)
 
 
 
