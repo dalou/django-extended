@@ -35,6 +35,7 @@ class EmailingForm(forms.ModelForm):
         model = Emailing
         fields = ('send_count', 'test_count', 'name', 'subject', 'sender', 'template', 'receivers', 'receivers_test',)
 
+
     def __init__(self, *args, **kwargs):
         super(EmailingForm, self).__init__( *args, **kwargs)
         self.fields['send_count'].widget.attrs['readonly'] = True
@@ -45,9 +46,14 @@ class EmailingForm(forms.ModelForm):
 
 class EmailingAdmin(admin.ModelAdmin):
     change_form_template = 'django_extended/emailing/admin/send_form.html'
-    list_display = ('name', 'subject', 'sender', 'receivers', 'date_created', 'send_count', 'test_count')
+    list_display = ('name', 'subject', 'sender', 'get_receivers', 'date_created', 'send_count', 'test_count')
 
     form = EmailingForm
+
+
+    def get_receivers(self):
+        receivers = self.receivers.split(',')
+        return """%s destinataires réels : %s [..]""" % ( len(receivers), receivers[0:10])
 
     def get_changeform_initial_data(self, request):
 
