@@ -24,6 +24,7 @@ from django.template import Context, RequestContext
 from django.utils.html import strip_tags
 from django.core.mail import get_connection, EmailMultiAlternatives
 from django.contrib.auth import get_user_model
+from premailer import transform
 
 from .models import *
 
@@ -77,7 +78,8 @@ def set_mailchimp_vars(template):
     return template
 
 
-
+def clean_html_for_email(html):
+    return transform(html)
 
 
 

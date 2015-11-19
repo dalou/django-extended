@@ -110,7 +110,8 @@ class Emailing(models.Model):
             mc_subject = re.search(r'\*\|MC:SUBJECT\|\*', self.template)
 
             # TODO replace mailchimp var on self.template
-            template = set_mailchimp_vars(self.template)
+            template = clean_html_for_email(self.template)
+            template = set_mailchimp_vars(template)
 
             receivers = self.receivers_test if test else self.receivers
             receivers = receivers.split(',')
