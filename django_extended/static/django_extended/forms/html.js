@@ -31,7 +31,11 @@
                         editor.on('change', function(e)
                         {
                             var content = editor.getContent({ format : config.apply_format });
-                            var content_text = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
+                            var content_text = $.trim(editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, ''));
+                            if(config.apply_format == "text")
+                            {
+                                content = $.trim(content.replace('&nbsp;', ''))
+                            }
                             if(config.inline)
                             {
                                 placeholder = editor.getElement().getAttribute("placeholder");
