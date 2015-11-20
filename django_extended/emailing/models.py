@@ -35,7 +35,7 @@ class EmailingUserActivationToken(models.Model):
     class Meta:
         verbose_name = u"Clé d'activation"
         verbose_name_plural = u"Clés d'activation"
-        ordering = ('-activation_date',)
+        ordering = ('activation_date',)
 
     def save(self, **kwargs):
         if not self.token:

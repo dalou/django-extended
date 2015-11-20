@@ -24,6 +24,7 @@ from babel.numbers import format_number, format_decimal, format_percent
 
 register = template.Library()
 
+from ..charts.templatetags import *
 
 DEFAULT_CURRENCY = 'EUR'
 # Send in data way to assets/js/input_format.js
