@@ -10,7 +10,13 @@ from django.shortcuts import render_to_response, redirect
 from .models import *
 
 class EmailingUserActivationTokenAdmin(admin.ModelAdmin):
-    list_display = ('email', 'token', 'is_used', 'expiration_date')
+    list_display = ('email', 'token', 'is_used', 'activation_date', 'expiration_date', 'created_date')
+    search_fields = ('email', 'token', 'activation_date', 'created_date' )
+    list_filter = ('is_used', )
+
+    def get_readonly_fields(self, *args, **kwargs):
+        fields = [f.name for f in self.model._meta.fields]
+        return fields
 admin.site.register(EmailingUserActivationToken, EmailingUserActivationTokenAdmin)
 
 class EmailingTestEmailAdmin(admin.ModelAdmin):
@@ -19,7 +25,11 @@ admin.site.register(EmailingTestEmail, EmailingTestEmailAdmin)
 
 
 class EmailingTransactionAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'emailing', 'receiver', 'date_created', 'send_count')
+    list_display = ('__unicode__', 'emailing', 'receiver', 'created_date', 'send_count')
+    search_fields = ('emailing__email', 'receiver',  )
+
+    def has_add_permission(self, request):
+        return False
 
     def get_readonly_fields(self, *args, **kwargs):
         return [f.name for f in self.model._meta.fields]
@@ -46,7 +56,7 @@ class EmailingForm(forms.ModelForm):
 
 class EmailingAdmin(admin.ModelAdmin):
     change_form_template = 'django_extended/emailing/admin/send_form.html'
-    list_display = ('name', 'subject', 'sender', 'get_receivers', 'date_created', 'send_count', 'test_count')
+    list_display = ('name', 'subject', 'sender', 'get_receivers', 'created_date', 'send_count', 'test_count')
 
     form = EmailingForm
 

@@ -12,18 +12,30 @@ from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.sites.models import Site
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from .utils import *
 
 
 
 class EmailingUserActivationToken(models.Model):
+
+    created_date = models.DateTimeField(u"Créé le", auto_now_add=True)
+    updated_date = models.DateTimeField(u"Modifié le", auto_now=True, db_index=True)
+
     email = models.EmailField(u"Adresse email", max_length=254, unique=True, db_index=True)
     token = models.CharField(u"Token d'activation", max_length=64, unique=True, db_index=True)
     is_used = models.BooleanField(u'Utilisé ?', default=False)
     expiration_date = models.DateTimeField(u"date d'expiration", blank=True, null=True)
+    activation_date = models.DateTimeField(u"date d'activation", blank=True, null=True)
 
     _hash_func = hashlib.sha256
+
+
+    class Meta:
+        verbose_name = u"Clé d'activation"
+        verbose_name_plural = u"Clés d'activation"
+        ordering = ('-activation_date',)
 
     def save(self, **kwargs):
         if not self.token:
@@ -32,32 +44,33 @@ class EmailingUserActivationToken(models.Model):
         super(EmailingUserActivationToken, self).save(**kwargs)
 
     def activate_user(self):
-        if True:#not self.is_used:
-            User = get_user_model()
-            self.email = self.email.strip()
-            if is_valid_email(self.email):
-                try:
-                    user = User.objects.get(email__iexact=self.email)
-                except User.DoesNotExist:
-                    user = User(
-                        email=self.email.strip(),
-                        is_active=True,
-                    )
-                    # if password:
-                    #     user.set_password(password)
-                    # else:
-                    user.set_unusable_password()
+        User = get_user_model()
+        self.email = self.email.strip()
+        if is_valid_email(self.email):
+            try:
 
-                    if not user.username:
-                        user.username = self.email.split('@')[0][0:254]
-                    user.save()
-
+                user = User.objects.get(email__iexact=self.email)
                 if not user.is_active:
                     user.is_active = True
                     user.save()
-                self.is_used = True
-                self.save()
-                return user
+
+                if self.is_used:
+                    return user
+
+            except User.DoesNotExist:
+
+                user = User(
+                    email=self.email,
+                    is_active=True,
+                    username=self.email.split('@')[0][0:254]
+                )
+                user.set_unusable_password()
+                user.save()
+
+            self.is_used = True
+            self.activation_date = timezone.now()
+            self.save()
+            return user
 
         return None
 
@@ -79,7 +92,9 @@ class EmailingUserActivationToken(models.Model):
 
 
 class Emailing(models.Model):
-    date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
+    created_date = models.DateTimeField(u"Créé le", auto_now_add=True)
+    updated_date = models.DateTimeField(u"Modifié le", auto_now=True, db_index=True)
+
     name = models.CharField(u"Nom", max_length=254)
     subject = models.CharField(u"Sujet du mail", max_length=254, blank=True, null=True)
     sender = models.CharField(u"De", max_length=254, blank=True, null=True)
@@ -93,7 +108,7 @@ class Emailing(models.Model):
     class Meta:
         verbose_name = u"Email groupé"
         verbose_name_plural = u"Emails groupés"
-        ordering = ('-date_created',)
+        ordering = ('-created_date',)
 
     def __repr__(self):
         sent = ""
@@ -164,7 +179,9 @@ class Emailing(models.Model):
 
 class EmailingTransaction(models.Model):
 
-    date_created = models.DateTimeField(u"Créé le", auto_now_add=True)
+    created_date = models.DateTimeField(u"Créé le", auto_now_add=True)
+    updated_date = models.DateTimeField(u"Modifié le", auto_now=True, db_index=True)
+
     emailing = models.ForeignKey('django_extended.Emailing')
     receiver = models.EmailField(u"Adresse email", max_length=254)
     send_count = models.IntegerField(u"Compteur d'envois", default=0)
@@ -172,7 +189,7 @@ class EmailingTransaction(models.Model):
     class Meta:
         verbose_name = u"Email - Transaction"
         verbose_name_plural = u"Email - Transactions"
-        ordering = ('-date_created',)
+        ordering = ('-created_date',)
 
     def __unicode__(self):
         sent = ""
