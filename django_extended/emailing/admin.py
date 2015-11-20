@@ -19,6 +19,7 @@ class EmailingUserActivationTokenAdmin(admin.ModelAdmin):
         return fields
 admin.site.register(EmailingUserActivationToken, EmailingUserActivationTokenAdmin)
 
+
 class EmailingTestEmailAdmin(admin.ModelAdmin):
     list_display = ('email', )
 admin.site.register(EmailingTestEmail, EmailingTestEmailAdmin)
@@ -99,9 +100,24 @@ class EmailingAdmin(admin.ModelAdmin):
 
         return super(EmailingAdmin, self).response_change( request, obj)
 
-
-
 admin.site.register(Emailing, EmailingAdmin)
+
+
+
+class ExtractEmailingAdmin(object):
+
+    emailing_form_template_name = 'django_extended/emailing/admin/extract_emailing.html'
+    list_emailing = ['extract_emailing']
+
+    def __init__(self, *args, **kwargs):
+        super(ExtractEmailingAdmin, self).__init__(*args, **kwargs)
+        self.actions += ('extract_emailing', )
+
+
+
+
+
+
 
 class SendMailMixin(object):
 
