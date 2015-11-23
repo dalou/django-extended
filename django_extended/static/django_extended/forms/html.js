@@ -64,7 +64,6 @@
                                         editor.execCommand('mceFocus', false, id);
                                         $(editor.getElement()).click();
                                     }
-                                        console.log('onFocus')
                                 }
 
                                 function onBlur()
@@ -76,7 +75,6 @@
                                         editor.setContent(placeholder_html);
                                         editor.getElement().innerHTML = placeholder_html
                                     }
-                                        console.log('onBlur')
                                 }
                                 //tinymce.DOM.bind(label.el, 'click', onFocus);
                                 editor.on('focus', onFocus);
