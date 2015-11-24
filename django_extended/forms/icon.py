@@ -29,6 +29,7 @@ class IconField(forms.CharField):
 class IconInput(forms.widgets.TextInput):
 
     class Media:
+        js = ['django_extended/forms/icon.js']
         css = {
             'all': (
                 # settings.STATIC_URL + 'fonts/icomoon/style.css',
@@ -71,7 +72,7 @@ class IconInput(forms.widgets.TextInput):
 
         </style>
         <div id="icons-%s">
-            <div style="" class="tabs">""" % id
+            <div style="" class="django_extended-icon-widget-tabs">""" % id
 
         for title, local_path, path, classname, prefix in self.styles:
             html += """<link href="%s" rel="stylesheet">""" % (path)
@@ -88,17 +89,18 @@ class IconInput(forms.widgets.TextInput):
             # title = title.group(1) if title else "Icons"
             # title = title.strip().strip("'").strip('"').strip()
 
-            tabs += """<li><a href="#tab-%s-%s">%s</a></li>""" % (id, i, title)
-            contents += """<div id="tab-%s-%s">"""  % (id, i)
+            tabs += """<li><a class="django_extended-icon-widget-tabs-control" href="#tab-%s-%s">%s</a></li>""" % (id, i, title)
+            contents += """<div class="django_extended-icon-widget-tabs-content" id="tab-%s-%s" style="display:none;">"""  % (id, i)
             for item in re.finditer(
                 r"\.(%s[\w\-\.]+)\:before" % classname,
                 filec
             ):
                 classname = item.group(1)
                 classname = prefix + ' ' + classname
-                contents += """<a class="django_extended-icon-widget %s" data-value="%s"><i class="%s"></i></a>""" % (
+                contents += """<a class="django_extended-icon-widget %s" data-value="%s" data-input="#%s"><i class="%s"></i></a>""" % (
                     "active" if value == classname else "",
                     classname,
+                    attrs['id'],
                     classname
                 )
             contents += "</div>"
@@ -110,17 +112,6 @@ class IconInput(forms.widgets.TextInput):
         html += """</div>
                 %(inherit)s
             </div>
-            <script type="text/javascript">
-                $(document).ready(function() {
-
-                    $( "#icons-%(id)s > div.tabs" ).tabs();
-                    $(document).on('click', '#icons-%(id)s .django_extended-icon-widget', function() {
-                         $('.django_extended-icon-widget.active').removeClass('active')
-                         $(this).addClass('active');
-                         $('#icons-%(id)s input').val($(this).data('value'))
-                    });
-                });
-            </script>
         """ % {
             'inherit' : super(IconInput, self).render(name, value, attrs=attrs),
             'id': id

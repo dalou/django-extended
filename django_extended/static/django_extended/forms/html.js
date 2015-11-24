@@ -2,7 +2,6 @@
 {
     function django_extended_load_html_input($input, config, id)
     {
-
         if($input[0].django_extended_load_html_input_loaded)
         {
             return;
@@ -20,6 +19,11 @@
             {
                 var tinymce_config = config['settings'];
                 id = tinymce_config['elements'];
+                if(id.match(/__prefix__/i)) {
+                    id = $input.attr('id');
+                    tinymce_config['elements'] = id
+                }
+
                 if (tinymce.editors[id])
                 {
                     tinymce.editors[id].destroy()
@@ -95,10 +99,6 @@
         {
             django_extended_load_html_input($(self));
         });
-        // $(document).on('mousenter', '[data-django_extended-html_input]', function(self)
-        // {
-        //     django_extended_load_html_input($(this));
-        // });
 
         $(document).on('mouseup', function(self)    {
             setTimeout(function()
@@ -108,44 +108,10 @@
                 {
                     django_extended_load_html_input($(self));
                 });
-            }, 0);
-        });
-
-        $(document).on('click', '.add-row', function(self)    {
-            console.log($('[data-django_extended-html_input]'))
-            $('[data-django_extended-html_input]').each(function(i, self)
-            {
-                django_extended_load_html_input($(self));
-            });
+            }, 250);
         });
 
     });
-
-
-
-    /*$(function ()
-    {
-        // initialize the TinyMCE editors on load
-        $('.tinymce').each(function () {
-            initTinyMCE($(this));
-        });
-
-        // initialize the TinyMCE editor after adding an inline
-        // XXX: We don't use jQuery's click event as it won't work in Django 1.4
-        document.body.addEventListener("click", function(ev)
-        {
-            if(!ev.target.parentNode || ev.target.parentNode.className.indexOf("add-row") === -1) {
-                return;
-            }
-            var $addRow = $(ev.target.parentNode);
-            setTimeout(function()
-            {  // We have to wait until the inline is added
-                $('textarea.tinymce', $addRow.parent()).each(function () {
-                    initTinyMCE($(this));
-                });
-            }, 0);
-        }, true);
-    });*/
 
 }(django && django.jQuery || jQuery));
 // }

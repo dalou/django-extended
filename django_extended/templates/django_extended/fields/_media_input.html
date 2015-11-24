@@ -39,11 +39,11 @@
     <div class="django_extended-media_input-modal">
         <button type="button" class="btn btn-primary django_extended-media_input-add-image">
             {% if not only_file %}
-                {{ "Image"|safe }}
+                <span style="color:white;" class="icon-picture icon-white"></span> {{ "Image"|safe }}
             {% else %}
-                {{ "Image"|safe }}
+                <span style="color:white;" class="icon-picture icon-white"></span> {{ "Image"|safe }}
+
             {% endif%}
-            <br/>
             <span class="appicon appicon-media"></span>
         </button>
         {% if not only_file %}
