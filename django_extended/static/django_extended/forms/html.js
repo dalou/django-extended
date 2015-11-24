@@ -110,6 +110,15 @@
                 });
             }, 0);
         });
+
+        $(document).on('click', '.add-row', function(self)    {
+            console.log($('[data-django_extended-html_input]'))
+            $('[data-django_extended-html_input]').each(function(i, self)
+            {
+                django_extended_load_html_input($(self));
+            });
+        });
+
     });
 
 

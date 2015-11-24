@@ -62,7 +62,10 @@ class IconInput(forms.widgets.TextInput):
                 text-decoration: none; color:rgb(30, 31, 102);   display: inline-block;
                 transition: all 0.4s ease-out;
             }
-            .django_extended-icon-widget.active {
+            .django_extended-icon-widget.active,
+            .django_extended-icon-widget.active i,
+            .django_extended-icon-widget.active a,
+            .django_extended-icon-widget.active span {
                 color:green; font-size: 25px; font-weight: bold;
             }
 
