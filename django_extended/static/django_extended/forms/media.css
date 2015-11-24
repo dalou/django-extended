@@ -1,3 +1,4 @@
+.django_extended-media_input { display: inline-block; }
 .django_extended-media_input-media { position: relative; text-align: center; display: inline-block; }
 .django_extended-media_input-button { opacity:0; }
 .django_extended-media_input-preview {  }
@@ -7,3 +8,6 @@
 .django_extended-media_input-change { margin: auto; }
 .django_extended-media_input-remove { position:absolute; bottom:5px; left:5px; right:0px; margin: auto; }
 .django_extended-media_input-modal {}
+.django_extended-media_input-or { display: block; text-align:center; margin:10px 25px; }
+.django_extended-media_input-add-image { margin-top: 20px; min-height: 40px; display:block !important; width:100% !important; }
+.django_extended-media_input-add-embed { min-height: 40px; display:block !important; width:100% !important; }

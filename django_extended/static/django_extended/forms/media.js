@@ -11,6 +11,7 @@ $(document).ready(function() {
         }
         this.django_extended_media_input_active = true;
 
+
         self = $(this);
         only_file = self.hasClass('django_extended-media_input-only_file');
         authorized_types = self.data('django_extended-media_input-authorized_types');

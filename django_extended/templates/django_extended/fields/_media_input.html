@@ -29,37 +29,28 @@
         </button>
         {% endif %} -->
     </span>
-    <span class="django_extended-media_input-empty django_extended-media_input-change {% if not value %}active{% endif %}">
+    <!--<span class="django_extended-media_input-empty django_extended-media_input-change {% if not value %}active{% endif %}">
 
         <span class="appicon appicon-media"></span>
         Ajouter un média
 
-    </span>
+    </span>-->
 
-    <div style="display:none;">
-        <div class="modal django_extended-media_input-modal" id="div_{{ id }}_modal">
-            <div class="modal-header">
-                Média
-            </div>
-            <div class="modal-body">
-                <button type="button" class="btn btn-primary django_extended-media_input-add-image">
-                    {% if not only_file %}
-                        {{ "Image"|safe }}
-                    {% else %}
-                        {{ "Image"|safe }}
-                    {% endif%}
-                    <br/>
-                    <span class="appicon appicon-media"></span>
-                </button>
-                {% if not only_file %}
-                <!-- <br/> -->
-                <span class="django_extended-media_input-or">ou</span>
-                <textarea class="form-control django_extended-media_input-add-embed"
-                    placeholder="Copiez collez une URL ou un code embed (youtube, dailymotion, soundcloud)"></textarea>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
+    <div class="django_extended-media_input-modal">
+        <button type="button" class="btn btn-primary django_extended-media_input-add-image">
+            {% if not only_file %}
+                {{ "Image"|safe }}
+            {% else %}
+                {{ "Image"|safe }}
+            {% endif%}
+            <br/>
+            <span class="appicon appicon-media"></span>
+        </button>
+        {% if not only_file %}
+        <!-- <br/> -->
+        <span class="django_extended-media_input-or">ou</span>
+        <textarea class="form-control django_extended-media_input-add-embed"
+            placeholder="Copiez collez une URL ou un code embed (youtube, dailymotion, soundcloud)"></textarea>
+        {% endif %}
     </div>
 </a>

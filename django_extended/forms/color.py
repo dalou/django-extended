@@ -30,9 +30,9 @@ class ColorInput(forms.widgets.TextInput):
 
     class Media:
         css = {
-            'all': (settings.STATIC_URL + 'django_extended/colpick.css',)
+            'all': (settings.STATIC_URL + 'django_extended/vendors/colpick/colpick.css',)
         }
-        js = (settings.STATIC_URL + 'django_extended/colpick.js',)
+        js = (settings.STATIC_URL + 'django_extended/vendors/colpick/colpick.js',)
 
     input_type = 'text'
 
