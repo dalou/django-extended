@@ -52,39 +52,43 @@
                         });
                         editor.on('init', function(e, placeholder)
                         {
-                            placeholder = editor.getElement().getAttribute("placeholder");
-                            if (typeof placeholder !== 'undefined' && placeholder !== false)
+                            if(config.placeholder)
                             {
-                                //var label = new Label;
-                                function onFocus()
+                                placeholder = editor.getElement().getAttribute("placeholder");
+                                if (typeof placeholder !== 'undefined' && placeholder !== false)
                                 {
-                                    var content = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
-                                    if(content == '' || content == placeholder)
+                                    //var label = new Label;
+                                    function onFocus()
                                     {
-                                        editor.focus();
-                                        editor.setContent('');
-                                        tinymce.setActive(editor);
-                                        editor.focus();
-                                        editor.execCommand('mceFocus', false, id);
-                                        $(editor.getElement()).click();
+                                        var content = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
+                                        if(content == '' || content == placeholder)
+                                        {
+                                            editor.focus();
+                                            editor.setContent('');
+                                            tinymce.setActive(editor);
+                                            editor.focus();
+                                            editor.execCommand('mceFocus', false, id);
+                                            $(editor.getElement()).click();
+                                        }
                                     }
-                                }
 
-                                function onBlur()
-                                {
-                                    var content = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
-                                    if(content == '')
+                                    function onBlur()
                                     {
-                                        var placeholder_html = '<span class="django_extended-html_input-placeholder">'+placeholder+'</span>'
-                                        editor.setContent(placeholder_html);
-                                        editor.getElement().innerHTML = placeholder_html
+                                        var content = editor.getContent({ format : 'text' }).replace(/^\s+|\s+$/g, '');
+                                        if(content == '')
+                                        {
+                                            var placeholder_html = '<span class="django_extended-html_input-placeholder">'+placeholder+'</span>'
+                                            editor.setContent(placeholder_html);
+                                            editor.getElement().innerHTML = placeholder_html
+                                        }
                                     }
+                                    //tinymce.DOM.bind(label.el, 'click', onFocus);
+                                    editor.on('focus', onFocus);
+                                    editor.on('blur', onBlur);
+                                    onBlur();
                                 }
-                                //tinymce.DOM.bind(label.el, 'click', onFocus);
-                                editor.on('focus', onFocus);
-                                editor.on('blur', onBlur);
-                                onBlur();
                             }
+
                         });
                     }
                     var instance = tinymce.init(tinymce_config);
