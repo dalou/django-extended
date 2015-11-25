@@ -1,4 +1,4 @@
-    import math
+import math
 from django.core.paginator import \
     Paginator, QuerySetPaginator, Page, InvalidPage
 
