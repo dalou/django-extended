@@ -114,13 +114,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             gravatar_url += urllib.urlencode({'d':default, 's':str(size)})
             return gravatar_url
 
-    def add_notification_counter(self, instance, value=1):
-        id = "%s_%s" % ( instance.__class__.__name__.lower(), instance.id )
-        if not self.notification_counter.get(id):
-            self.notification_counter[id] = value
-        else:
-            self.notification_counter[id] += value
-
     def save(self, **kwargs):
         if not self.public_key:
             self.set_public_key()

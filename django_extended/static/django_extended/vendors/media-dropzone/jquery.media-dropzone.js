@@ -165,9 +165,16 @@
             console.log(text)
             if(self.options.uploadUrl)
             {
-                $.post(self.options.uploadUrl, [
-                    { name: self.options.paramName, value: text }
-                ], function(data) {
+                var data = [{ name: self.options.paramName, value: text }];
+                var params = self.options.params
+                for(var i in params) {
+                    if(params[i])
+                    {
+                        data.append({ name: i, value: params[i] });
+                    }
+                }
+                $.post(self.options.uploadUrl, data, function(data)
+                {
                     self.$elm.trigger('mediaDropzone.deposed', [self, data]);
                 });
             }
