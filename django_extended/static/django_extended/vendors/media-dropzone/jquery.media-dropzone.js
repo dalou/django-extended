@@ -22,25 +22,35 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
         ]
     }
 
-    var default_options =
-    {
-        uploadMultiple: false,
-        maxFilesize : 5,
-        paramName: 'media',
-        maxMedias : 1,
-        clickable: true,
-        authorizedTypes : ['image', 'embed'],
-        addRemoveLinks : true,
-        dictRemoveFile: '',
-        dictCancelUpload: '',
-    }
+    // var default_options =
+    // {
+    //     uploadMultiple: false,
+    //     maxFilesize : 5,
+    //     paramName: null,
+    //     maxMedias : 1,
+    //     clickable: true,
+    //     authorizedTypes : ['image', 'embed'],
+    //     addRemoveLinks : true,
+    //     dictRemoveFile: '',
+    //     dictCancelUpload: '',
+    // }
 
     function MediaDropzone($elm, options, self)
     {
         self = this;
         self.$elm = $elm;
-        self.options = $.extend(default_options, options, self.$elm.data('media-dropzone'));
-        console.log('New drozone', $elm, self.options)
+        self.options = $.extend(true, {
+            uploadMultiple: false,
+            maxFilesize : 5,
+            paramName: null,
+            maxMedias : 1,
+            clickable: true,
+            authorizedTypes : ['image', 'embed'],
+            addRemoveLinks : true,
+            dictRemoveFile: '',
+            dictCancelUpload: '',
+        }, options, self.$elm.data('media-dropzone'));
+        console.log('New drozone')
         self.listeners = {}
         self.progress = 0;
         self.file = null;
@@ -49,10 +59,16 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
         self.input = null;
         self.ready_to_click = false;
 
+        if(self.options.paramName)
+        {
+            self.inputs = self.$elm.find('[name="'+(self.options.paramName)+'"]');
+        }
+        else
+        {
+            self.inputs = $.noop;
+        }
 
-        self.inputs = self.$elm.find('[name="'+(self.options.paramName)+'"]');
-
-        if(!self.inputs.length && self.options.inputs)
+        if(!self.inputs.length && self.options.inputs && $(self.options.inputs).length)
         {
             self.inputs = $(self.options.inputs).find('input, textarea');
         }
@@ -61,10 +77,23 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
             self.inputs = self.$elm.find('input, textarea')
         }
 
-        self.embed_input = self.inputs.filter('textarea');
         self.files_input = self.inputs.filter('input[type=file]');
+        if(!self.options.paramName && self.files_input.attr('name'))
+        {
+            self.options.paramName = self.files_input.attr('name')
+        }
+        self.embed_input = self.inputs.filter('textarea');
+        if(!self.options.paramName && self.embed_input.attr('name'))
+        {
+            self.options.paramName = self.embed_input.attr('name')
+        }
+        self.files_input.on('click', function(e) {
+            e.stopPropagation();
+        })
 
-        console.log('INPUTS', self.embed_input, self.files_input)
+        console.log('file input', self.files_input, self.files_input.attr('name'))
+        console.log('embed input', self.embed_input, self.embed_input.attr('name'))
+        console.log('paramName', self.options.paramName)
 
 
         self.$clickable = null;
@@ -77,30 +106,33 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
         {
             self.$clickable = self.$elm.find(self.options.clickable)
         }
-        console.log('clickable', self.options.clickable, self.$clickable)
+        //console.log('clickable', self.options.clickable, self.$clickable)
         if(self.$clickable && self.$clickable.length)
         {
-            self.$clickable.on('mouseenter', function() {
-                self.ready_to_click = true;
-            }).on('mouseleave', function() {
-                self.ready_to_click = false;
-            });
-            self.$elm.on('click', function(e)
+            // self.$clickable.on('mouseenter', function()
+            // {
+            //     self.ready_to_click = true;
+            // }).on('mouseleave', function()
+            // {
+            //     self.ready_to_click = false;
+            // });
+            self.$clickable.on('mouseup', function(e)
             {
-                console.log(self.ready_to_click, self.dropzone)
-                if( self.ready_to_click )
-                {
+                // console.log(self.ready_to_click, self.dropzone)
+                // if( self.ready_to_click )
+                // {
+
                     if(self.dropzone && self.dropzone.hiddenFileInput)
                     {
                         self.dropzone.hiddenFileInput.click();
                     }
                     else if(self.files_input.length)
                     {
-                        self.files_input.click();
+                        self.files_input.eq(0).click();
                     }
                     e.stopPropagation();
                     return false;
-                }
+                // }
             })
             // self.options.clickable = self.$elm.find('> *')
         }
@@ -180,11 +212,14 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
 
             })
             self.dropzone = new Dropzone(self.$elm[0], dropzone_options);
-            console.log(self.dropzone)
         }
         // No file upload
         else
         {
+
+
+
+
             var input = self.$elm.find('input').eq(0);
             if(input.length && input[0].form)
             {
@@ -196,18 +231,7 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
                 }
             }
 
-            // self.on('click', '.django_extended-media_input-remove', function()
-            // {
-            //     self.find('.django_extended-media_input-change').change();
-            //     self.find('input[type=checkbox]').eq(0).prop('checked', true)
-            // });
-            // modal.on('click', '.django_extended-media_input-remove', function()
-            // {
-            //     self.find('.django_extended-media_input-media').removeClass('active');
-            //     self.find('.django_extended-media_input-empty').addClass('active');
-            //     self.find('.django_extended-media_input-embed').val('');
-            //     inputs.find('input[type=checkbox]').eq(0).prop('checked', true)
-            // });
+
 
             self.files_input.on('change', function(e)
             {

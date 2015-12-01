@@ -1,24 +1,20 @@
 
-<span style="display:none;" id="div_{{ id }}_inputs">
-    {% if not required %}
-        {{ clear }}
-    {% endif %}
-    <input class="django_extended-media_input-file" {{ input_attrs|safe }} type="file" {% if value.is_image %}name="{{ name }}"{% endif %} accept="image/*" />
-    <textarea type="text" {{ input_attrs|safe }} {% if not value.is_embed %}name="{{ name }}"{% endif %}></textarea>
-</span>
+
 
 <a class="django_extended-media_input {% if only_file %}django_extended-media_input-only_file{% endif %}"
     id="div_{{ id }}"
-    data-modal="#div_{{ id }}_modal"
-    data-inputs="#div_{{ id }}_inputs"
-    data-name="{{ name }}"
-    data-embed-types='{{ embed_types }}'
+
     data-media-dropzone='{
         "clickable": ".django_extended-media_input-add-image",
-        "inputs": "#div_{{ id }}_inputs",
-        "paramName": "{{ name }}"
     }'>
 
+    <span style="" id="div_{{ id }}_inputs">
+        {% if not required %}
+            {{ clear }}
+        {% endif %}
+        <input class="django_extended-media_input-file" {{ input_attrs|safe }} type="file" {% if value.is_image %}name="{{ name }}"{% endif %} accept="image/*" />
+        <textarea type="text" {{ input_attrs|safe }} {% if not value.is_embed %}name="{{ name }}"{% endif %}></textarea>
+    </span>
 
     <span class="django_extended-media_input-media {% if value %}active{% endif %}">
 
