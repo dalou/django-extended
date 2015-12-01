@@ -1,3 +1,4 @@
+
 <span style="display:none;" id="div_{{ id }}_inputs">
     {% if not required %}
         {{ clear }}
@@ -12,7 +13,12 @@
     data-inputs="#div_{{ id }}_inputs"
     data-name="{{ name }}"
     data-embed-types='{{ embed_types }}'
-    >
+    data-media-dropzone='{
+        "clickable": ".django_extended-media_input-add-image",
+        "inputs": "#div_{{ id }}_inputs",
+        "paramName": "{{ name }}"
+    }'>
+
 
     <span class="django_extended-media_input-media {% if value %}active{% endif %}">
 

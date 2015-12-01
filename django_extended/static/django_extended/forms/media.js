@@ -3,142 +3,42 @@ $(document).ready(function() {
 
 
 
-    $(document).on('mouseenter', '.django_extended-media_input', function(self, only_file, authorized_types, modal, inputs, name, embed_types)
+    $(document).on('mouseenter', '.django_extended-media_input', function(self)
     {
-        if(this.django_extended_media_input_active)
+        if(this.django_extended_media_input_active === true)
         {
             return;
         }
         this.django_extended_media_input_active = true;
+        self = this;
 
-
-        self = $(this);
-        only_file = self.hasClass('django_extended-media_input-only_file');
-        authorized_types = self.data('django_extended-media_input-authorized_types');
-        modal = self.find('.django_extended-media_input-modal');
-        inputs = $(self.data('inputs'))
-        name = self.data('name')
-        embed_types = self.data('embed-types')
-
-
-        var $form = $(inputs.find('input').eq(0)[0].form);
-        if($form.attr('enctype') != 'multipart/form-data')
+        $(this).mediaDropzone().on('mediaDropzone.deposed', function(e, media, file, embed)
         {
-            $form.attr('enctype', 'multipart/form-data');
-        }
-        self.on('click', '.django_extended-media_input-remove', function()
-        {
-            self.find('.django_extended-media_input-change').change();
-            self.find('input[type=checkbox]').eq(0).prop('checked', true)
-        });
-        modal.on('click', '.django_extended-media_input-remove', function()
-        {
-            self.find('.django_extended-media_input-media').removeClass('active');
-            self.find('.django_extended-media_input-empty').addClass('active');
-            self.find('.django_extended-media_input-embed').val('');
-            inputs.find('input[type=checkbox]').eq(0).prop('checked', true)
-        });
-
-        // self.on('click', '.django_extended-media_input-embed', function()
-        // {
-        //     self.find('textarea').show()
-        //     // self.find('.django_extended-media_input-media').addClass('active');
-        //     // self.find('.django_extended-media_input-empty').removeClass('active');
-        //     self.find('input[type=checkbox]').eq(0).prop('checked', false).change();
-        // });
-
-        /* validate embed code */
-        modal.on('paste', '.django_extended-media_input-add-embed', function(e, input)
-        {
-            input = $(this);
-            setTimeout(function(e) {
-
-                var value = input.val();
-                var embed_value = null;
-
-
-                for(var type in embed_types)
-                {
-                    var patterns = embed_types[type];
-                    for(var i in patterns)
-                    {
-                        var regex = new RegExp(patterns[i][0], 'gi');
-                        var result = value.match(regex)
-                        console.log(regex.exec(value))
-                        if(result)
-                        {
-                            console.log(result[0], type, patterns[i][1], result);
-                            embed_value = result[0].replace(regex, patterns[i][1].replace('\\', '$'));
-                            console.log(embed_value);
-                            break;
-                        }
-                    }
-                }
-
-                if(embed_value)
-                {
-                    inputs.find('textarea').attr('name', name).val(value);
-                    inputs.find('input[type=file]').removeAttr('name');
-                    inputs.find('input[type=checkbox]').eq(0).prop('checked', false);
-
-                    self.find('.django_extended-media_input-preview').html(embed_value).css({
-                        backgroundImage: ''
-                    });
-                    self.find('.django_extended-media_input-media').addClass('active');
-                    self.find('.django_extended-media_input-empty').removeClass('active');
-                    $.magnificPopup.close();
-                }
-
-            }, 0);
-        });
-
-        /* click to add image from input file */
-        modal.on('click', '.django_extended-media_input-add-image', function()
-        {
-            inputs.find('input[type=file]').click();
-            return false;
-        });
-
-        /* Upload image receive */
-        inputs.on('change', 'input[type=file]', function(e)
-        {
-            var files = this.files;
-            if (!files || files.length == 0)
+            console.log('media deposed', media, file, embed)
+            if(file)
             {
-                $(this).val(null);
-                return false;
+                $(self).find('.django_extended-media_input-preview').html('<img src="'+file+'"/>').css({
+                    backgroundImage: 'url(' + file + ')'
+                });
+                $(self).find('.django_extended-media_input-media').addClass('active');
+                $(self).find('.django_extended-media_input-empty').removeClass('active');
+                $(self).find('input[type=checkbox]').eq(0).prop('checked', false);
             }
-            if (files.length > 1) {
-                console.log("Not supporting more than 1 file");
-            }
-            var file = files[0];
-            if(!file.type.match(/image.*/)) { }
-            else
+            else if(embed)
             {
-                inputs.find('textarea').removeAttr('name');
-                inputs.find('input[type=file]').attr('name', name);
-                var reader = new FileReader();
-                reader.onload = (function(newFile)
-                {
-                    return function(e) {
-                        self.find('.django_extended-media_input-preview').html('<img src="'+e.target.result+'"/>').css({
-                            backgroundImage: 'url(' + e.target.result + ')'
-                        });
-                        self.find('.django_extended-media_input-media').addClass('active');
-                        self.find('.django_extended-media_input-empty').removeClass('active');
-                        inputs.find('input[type=checkbox]').eq(0).prop('checked', false);
-                        //APPLY($input, $input_cropped);
-                    };
-                })(file);
-                var ret = reader.readAsDataURL(file), canvas = document.createElement("canvas");
-                ctx = canvas.getContext("2d");
-                self.onload = function()
-                {
-                    ctx.drawImage($input_cropped.parent(), 100, 100);
-                }
+                $(self).find('input[type=checkbox]').eq(0).prop('checked', false);
+
+                $(self).find('.django_extended-media_input-preview').html(embed).css({
+                    backgroundImage: ''
+                });
+                $(self).find('.django_extended-media_input-media').addClass('active');
+                $(self).find('.django_extended-media_input-empty').removeClass('active');
             }
-            $.magnificPopup.close();
         });
+
+
+
+
     });
 
 

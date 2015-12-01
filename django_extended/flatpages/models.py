@@ -23,6 +23,7 @@ class FlatPagePosition(models.Model):
     is_active = models.BooleanField(default=True, verbose_name=u"Activée ?")
 
     class Meta:
+
         verbose_name = u"Position d'un lien de page statique"
         verbose_name_plural = u"Positions des page statique"
         ordering = ('placement' ,'order_col', 'order',  )

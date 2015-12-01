@@ -53,7 +53,7 @@ $(document).ready(function(header_fit, datetimepicker) {
         'USD': { 'format': '$%s', 'locale': 'en_US', 'spacing': ',', 'decimal': '.', 'placeholder': 'USD' },
     };
 
-    $('form').delegate('input.price-formated', 'keyup', function(self, oldVal) {
+    $(document).on('input.price-formated', 'keyup', function(self, oldVal) {
         self = $(this);
         var pos = getCarret(this);
             spaces = 0,

@@ -60,6 +60,7 @@ class MediaInput(forms.widgets.ClearableFileInput):
             )
         }
         js = (
+            'django_extended/vendors/media-dropzone/jquery.media-dropzone.js',
             'django_extended/forms/media.js',
         )
 

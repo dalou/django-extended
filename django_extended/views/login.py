@@ -12,7 +12,7 @@ from .. import signals
 class LoginForm(forms.Form):
 
     email = forms.EmailField(label="Adresse e-mail")
-    authentication_fail_message = _("The email address and/or password you specified are not correct.")
+    authentication_fail_message = _(u"L'adresse email ou le mot de passe que vous avez renseigné est incorrect.")
 
     password = forms.CharField(
         label=u"Mot de passe",
@@ -35,9 +35,9 @@ class LoginForm(forms.Form):
             if user.is_active:
                 self.user = user
             else:
-                raise forms.ValidationError(_("This account is inactive."))
+                self.add_error('email', "This account is inactive.")
         else:
-            raise forms.ValidationError(self.authentication_fail_message)
+            self.add_error('email', self.authentication_fail_message)
         return self.cleaned_data
 
 
