@@ -19,7 +19,7 @@ $.fn.addLoading = function(text)
 {
     return this.each(function(i, self)
     {
-        if( self.is_loading != true )
+        if( self.is_loading !== true )
         {
             self.is_loading = true;
             $loading = $("<span class='loading-text'></span>");
@@ -69,13 +69,16 @@ $(document).ready(function(menuTo, select)
 
     $('[data-loading]').addLoading();
 
-    $('[data-slick]').each(function(i, self)
-    {
+    $(document).on('mouseenter', '[data-slick]', function(self) {
+        if(this.data_slick === true) return
+        this.data_slick = true;
         self = $(this);
-        self.imagesLoaded(function() {
+        //self.imagesLoaded(function() {
             self.slick(self.data('slick'));
-        });
-    });
+        //});
+    })
+    $('[data-slick]').trigger('mouseenter');
+
 
     $('[data-share]').each(function(i, self)
     {

@@ -39,6 +39,7 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
     {
         self = this;
         self.$elm = $elm;
+        console.log(self.$elm, self.$elm.data('media-dropzone'))
         self.options = $.extend(true, {
             uploadMultiple: false,
             maxFilesize : 5,
@@ -91,9 +92,9 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
             e.stopPropagation();
         })
 
-        console.log('file input', self.files_input, self.files_input.attr('name'))
-        console.log('embed input', self.embed_input, self.embed_input.attr('name'))
-        console.log('paramName', self.options.paramName)
+        // console.log('file input', self.files_input, self.files_input.attr('name'))
+        // console.log('embed input', self.embed_input, self.embed_input.attr('name'))
+        // console.log('paramName', self.options.paramName)
 
 
         self.$clickable = null;
@@ -116,9 +117,8 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
             // {
             //     self.ready_to_click = false;
             // });
-            self.$clickable.on('mouseup', function(e)
+            self.$clickable.on('mousedown', function(e)
             {
-                // console.log(self.ready_to_click, self.dropzone)
                 // if( self.ready_to_click )
                 // {
 
@@ -180,24 +180,25 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
                     }
                     self.file_type = file.type;
                     formData.append("file_typemime", file.type);
-                    self.$elm.trigger('mediaDropzone.sending', [self, file]);
+                    self.$elm.trigger('mediaDropzone.sending', [self, file, null]);
+                    self.$elm.trigger('mediaDropzone.filesending', [self, file]);
                         console.log('params', formData)
                 }
                 , removedfile: function(file)
                 {
                     self.file = file;
-                    self.$elm.trigger('mediaDropzone.removedfile', [self, dataUrl])
+                    self.$elm.trigger('mediaDropzone.fileremoved', [self, file, dataUrl])
                 }
                 , thumbnail : function(file, dataUrl)
                 {
                     self.file = file;
-                    self.$elm.trigger('mediaDropzone.thumbnail', [self, dataUrl])
+                    self.$elm.trigger('mediaDropzone.filethumbnail', [self, file, dataUrl])
                     //self.$elm.css({ background: 'url(' + dataUrl + ')', opacity:0 }).addClass('media-dropzone-processing')
                 }
                 , uploadprogress: function(file, progress)
                 {
                     self.progress = progress;
-                    self.$elm.trigger('mediaDropzone.uploadprogress', [self, progress])
+                    self.$elm.trigger('mediaDropzone.fileuploading', [self, file, progress])
                     //self.$elm.css({ opacity: progress/100.00 })
                     //console.log('uploadprogress', file,e)
                 }
@@ -205,8 +206,9 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
                 {
                     self.progress = 100;
                     self.data = data;
-                    self.$elm.trigger('mediaDropzone.success', [self, data]);
-                    self.$elm.trigger('mediaDropzone.deposed', [self, data]);
+                    self.$elm.trigger('mediaDropzone.fileuploaded', [self, file, data]);
+                    self.$elm.trigger('mediaDropzone.uploaded', [self, data]);
+                    self.$elm.trigger('mediaDropzone.deposed', [self, file, data]);
                     return true;
                 }
 
@@ -362,8 +364,11 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
                     }
                 }
                 self.$elm.trigger('mediaDropzone.sending', [self, null, embed_value]);
+                self.$elm.trigger('mediaDropzone.embedsending', [self, embed_value]);
                 $.post(self.options.uploadUrl, data, function(data)
                 {
+                    self.$elm.trigger('mediaDropzone.mediauploaded', [self, embed_value, data]);
+                    self.$elm.trigger('mediaDropzone.uploaded', [self, data]);
                     self.$elm.trigger('mediaDropzone.deposed', [self, null, embed_value]);
                 });
             }
@@ -405,7 +410,6 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
     {
         return this.each(function(i, self, opt)
         {
-            console.log("try to create dropzone")
             if(!options)
             {
                 options = {}
@@ -414,6 +418,7 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
             {
                 self.mediaDropzone_attached = new MediaDropzone($(self), options);
             }
+
             if(typeof options === "string")
             {
                 if(options == "paste")
@@ -445,12 +450,12 @@ $(document).ready(function(hover_element)
         hover_element = null;
     });
 
-    $(document).on('paste', function (e)
-    {
-        if(hover_element)
-        {
-            hover_element.mediaDropzone('paste', e.originalEvent.clipboardData);
-        }
-    });
+    // $(document).on('paste', function (e)
+    // {
+    //     if(hover_element)
+    //     {
+    //         hover_element.mediaDropzone('paste', e.originalEvent.clipboardData);
+    //     }
+    // });
 
 });
