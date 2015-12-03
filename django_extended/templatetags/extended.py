@@ -15,6 +15,7 @@ from django.utils.translation import to_locale, get_language
 from django.template.defaultfilters import floatformat
 from django.forms.utils import flatatt
 from django.http import QueryDict
+from django.middleware import csrf
 
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument, MultiValueArgument
@@ -65,6 +66,9 @@ def price_format_currency_to_decimal(value, currency='EUR'):
     except:
         return None
 
+@register.simple_tag(takes_context=True)
+def csrf_token_flat(context):
+    return csrf.get_token(context['request'])
 
 @register.filter
 def percentage(value):

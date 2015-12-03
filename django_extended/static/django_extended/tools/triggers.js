@@ -12,10 +12,42 @@ if (!String.prototype.endsWith) {
   };
 }
 
+(function($){
+    $.unserialize = function(serializedString)
+    {
+        serializedString = serializedString.split("?");
+        if(serializedString.length > 1)
+        {
+            serializedString = serializedString[1]
+        }
+        else {
+            serializedString = serializedString[0]
+        }
+        var str = decodeURI(serializedString);
+        var pairs = str.split('&');
+        var obj = {}, p, idx, val;
+        for (var i=0, n=pairs.length; i < n; i++) {
+            p = pairs[i].split('=');
+            idx = p[0];
+
+            if (idx.indexOf("[]") == (idx.length - 2)) {
+                // Eh um vetor
+                var ind = idx.substring(0, idx.length-2)
+                if (obj[ind] === undefined) {
+                    obj[ind] = [];
+                }
+                obj[ind].push(p[1]);
+            }
+            else {
+                obj[idx] = p[1];
+            }
+        }
+        return obj;
+    };
+})(jQuery);
 
 
-
-$.fn.addLoading = function(text)
+$.fn.addLoading = function(text, b, c)
 {
     return this.each(function(i, self)
     {
@@ -26,20 +58,14 @@ $.fn.addLoading = function(text)
             $(self).append($loading.hide()).addClass('loading');
             $loading.fadeIn(300);
         }
-        if(text)
+        var new_text = text;
+        if(!new_text)
         {
-            $(self).find('.loading-text').text(text);
-        }
-        else {
-            var text = $(self).data('loading');
-            if(!text || typeof text != "string")
-            {
-                text = null;
-            }
-            if(text)
-            {
-                $(self).find('.loading-text').text(text);
-            }
+            new_text = $(self).data('loading');
+        };
+        if(new_text)
+        {
+            $(self).find('.loading-text').text(new_text);
         }
     });
 }
