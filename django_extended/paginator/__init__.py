@@ -188,6 +188,8 @@ class DiggPaginator(ExPaginator):
             raise ValueError('padding too large for body (max %d)'%max_padding)
         super(DiggPaginator, self).__init__(*args, **kwargs)
 
+        self.queryset = self.object_list
+
     def page(self, number, *args, **kwargs):
         """Return a standard ``Page`` instance with custom, digg-specific
         page ranges attached.
