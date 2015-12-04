@@ -144,10 +144,12 @@ $(document).ready(function(menuTo, select)
             callbacks: {
                 open: function() {
                     if(window.mfp) window.mfp.popupsCache = {};
+                    trigger.trigger('model.opened', [])
                 },
                 ajaxContentAdded: function() {
-                    select(this.content.find('select'));
+                    //select(this.content.find('select'));
                     this.content.find('input,textarea').eq(0).focus();
+                    trigger.trigger('model.loaded', [this.content])
                 }
             },
             mainClass: 'my-mfp-slide-bottom',
@@ -158,12 +160,19 @@ $(document).ready(function(menuTo, select)
 
     $('[data-isotopes]').each(function(i, self)
     {
-        $(self).imagesLoaded(function() {
-            $(self).isotope({
-                itemSelector: '[data-isotope]',
-                layout: 'packery'
-            })
-        });
+        var options = $.extend({
+            itemSelector: '[data-isotope]',
+            layoutMode: 'fitRows',
+        }, $(self).data('isotopes'))
+        if($.fn.imagesLoaded) {
+            $(self).imagesLoaded(function() {
+                $(self).isotope(options)
+            });
+        }
+        else {
+            $(self).isotope(options)
+        }
+
     });
 
     $(document).on('mouseover', '[data-tooltip]', function(content, options)
