@@ -113,8 +113,9 @@ def formatted_price(value, currency='EUR'):
 @register.filter(name='formatted_price_html')
 def formatted_price_html(value, currency='EUR'):
     price = formatted_price(value, currency)
-    price = price.replace(u'€', u'<sup>€</sup>')
-    price = mark_safe(price)
+    if price:
+        price = price.replace(u'€', u'<sup>€</sup>')
+        price = mark_safe(price)
     return price
 
 
