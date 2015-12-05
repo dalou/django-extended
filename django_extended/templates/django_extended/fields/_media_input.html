@@ -19,7 +19,11 @@
     <span class="django_extended-media_input-media {% if value %}active{% endif %}">
 
         <span class="django_extended-media_input-preview" {% if value.is_image %}style="background-image: url({{ value.url }});"{% endif %}>
-            {{ value.html|safe }}
+            {% if value.is_image %}
+                <img src="{{ value.url }}" style="margin-bottom:15px;" class="img-responsive" />
+            {% else %}
+                {{ value.html|safe }}
+            {% endif %}
         </span>
        <!--  <button type="button" class="btn btn-primary django_extended-media_input-button django_extended-media_input-change">
             {{ change_message|default:"Changer"|safe }}
@@ -39,14 +43,14 @@
     </span>-->
 
     <div class="django_extended-media_input-modal">
-        <button type="button" class="btn btn-primary django_extended-media_input-add-image">
-            {% if not only_file %}
-                <span style="color:white;" class="icon-picture icon-white"></span> {{ "Image"|safe }}
-            {% else %}
-                <span style="color:white;" class="icon-picture icon-white"></span> {{ "Image"|safe }}
-
-            {% endif%}
-            <span class="appicon appicon-media"></span>
+        <button type="button" class="btn btn5 large block django_extended-media_input-add-image">
+            <span class="">
+                {% if not only_file %}
+                    <span class="appicon appicon-media"></span>{{ "Image"|safe }}
+                {% else %}
+                    <span class="appicon appicon-media"></span>{{ "Image"|safe }}
+                {% endif%}
+            </span>
         </button>
         {% if not only_file %}
         <!-- <br/> -->

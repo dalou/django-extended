@@ -14,10 +14,10 @@ $(document).ready(function() {
 
         $(this).mediaDropzone().on('mediaDropzone.deposed', function(e, media, file, embed)
         {
-            console.log('media deposed', media, file, embed)
+            //console.log('media deposed', media, file, embed)
             if(file)
             {
-                $(self).find('.django_extended-media_input-preview').html('<img src="'+file+'"/>').css({
+                $(self).find('.django_extended-media_input-preview').html('<img style="margin-bottom:15px;" class="img-responsive" src="'+file+'"/>').css({
                     backgroundImage: 'url(' + file + ')'
                 });
                 $(self).find('.django_extended-media_input-media').addClass('active');

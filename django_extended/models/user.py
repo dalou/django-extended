@@ -78,6 +78,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         Returns the first_name plus the last_name, with a space in between.
         """
+        if not self.first_name and not self.last_name:
+            if self.username:
+                return self.username.strip()
+            else:
+                return self.email.strip()
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
@@ -86,6 +91,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         "Returns the short name for the user."
+        if not self.first_name:
+            if self.username:
+                return self.username.strip()
+            else:
+                return self.email.split('@')[0].strip()
         return self.first_name
 
 

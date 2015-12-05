@@ -21,6 +21,7 @@ class PriceField(models.DecimalField):
         kwargs['form_class'] = PriceFormField
         return super(PriceField, self).formfield(**kwargs)
 
+
 try:
     from south.modelsinspector import add_introspection_rules
     add_introspection_rules([], ["^django_extended\.fields\.PriceField"])

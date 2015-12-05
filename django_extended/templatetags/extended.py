@@ -16,6 +16,7 @@ from django.template.defaultfilters import floatformat
 from django.forms.utils import flatatt
 from django.http import QueryDict
 from django.middleware import csrf
+from django.utils.safestring import mark_safe
 
 from classytags.core import Tag, Options
 from classytags.arguments import MultiKeywordArgument, MultiValueArgument
@@ -106,12 +107,21 @@ def smartdate(value):
 
 @register.filter(name='formatted_price')
 def formatted_price(value, currency='EUR'):
-    return price_format_decimal_to_currency(value, currency)
+    price = price_format_decimal_to_currency(value, currency)
+    return price
+
+@register.filter(name='formatted_price_html')
+def formatted_price_html(value, currency='EUR'):
+    price = formatted_price(value, currency)
+    price = price.replace(u'€', u'<sup>€</sup>')
+    price = mark_safe(price)
+    return price
+
 
 @register.filter(name='formatted_float')
-def formatted_float(value, currency='EUR'):
-    return price_format_decimal_to_currency(value, currency)
-
+def formatted_float(value, currency='EUR', html=False):
+    price = price_format_decimal_to_currency(value, currency)
+    return price
 
 
 
