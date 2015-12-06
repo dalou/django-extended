@@ -84,6 +84,53 @@ $.fn.removeLoading = function()
 $(document).ready(function(menuTo, select)
 {
 
+
+    $(document).on('mousedown', '[data-confirm]', function(e, self)
+    {
+        e.preventDefault();
+        self = $(this);
+        $.magnificPopup.open({
+            type: 'inline',
+            closeMarkup: '<button type="button" class="mfp-close"><span class="appicon appicon-close mfp-close"></span></button>',
+            items: {
+                src: '<div class="modal">\
+                    <div class="modal-header">'+$(this).data('confirm')+'</div>\
+                    <div class="modal-body">\
+                        <div class="row">\
+                            <div class="col-md-4">\
+                                <a class="no btn btn1">Annuler</a>\
+                            </div>\
+                            <div class="col-md-4"></div>\
+                            <div class="col-md-4">\
+                                <a class="yes btn btn1">Confirmer</a>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="modal-footer"></div>\
+                </div>',
+                cache: true,
+            },
+            settings: {cache: true},
+            callbacks: {
+                open: function() {
+                    self.trigger('model.opened', [])
+                    $($.magnificPopup.instance.content).on('click', '.no', function()
+                    {
+                        $.magnificPopup.close();
+                    }).on('click', '.yes', function()
+                    {
+                        $.magnificPopup.close();
+                        self.click();
+                    })
+                },
+            },
+            mainClass: 'my-mfp-slide-bottom',
+            removalDelay: 300
+        })
+        e.stopPropagation();
+        return false;
+    });
+
     $('[data-images-loading]').each(function(e, $self)
     {
         $self = $(this).addLoading();
