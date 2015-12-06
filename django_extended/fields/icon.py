@@ -17,7 +17,7 @@ class IconField(models.CharField):
         super(IconField, self).__init__(*args, **kwargs)
 
     def formfield(self, **kwargs):
-        kwargs['widget'] = ColorInput
+        kwargs['widget'] = IconInput
         return super(IconField, self).formfield(**kwargs)
 
 try:

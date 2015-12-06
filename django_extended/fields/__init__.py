@@ -7,4 +7,5 @@ from .media import MediaField
 from .percent import PercentField
 from .file import ContentTypeRestrictedFileField, UniqueFilename, unique_filename
 from .html import HtmlField, HTMLField
+from .date import DateTimeField, DateField
 from jsonfield import JSONField

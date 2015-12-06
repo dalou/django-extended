@@ -10,7 +10,7 @@ class DevBackend(EmailBackend):
 
     def route_recipients(self, recipients):
         for i,r in enumerate(recipients):
-            recipients[i] = "autrusseau.damien@gmail.com"
+            recipients[i] = "autrusseau.damien@gmail.com, adelineautrusseau@gmail.com"
         return recipients
 
     def _send(self, message):
