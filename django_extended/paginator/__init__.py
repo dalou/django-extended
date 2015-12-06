@@ -1,6 +1,6 @@
 import math
 from django.core.paginator import \
-    Paginator, QuerySetPaginator, Page, InvalidPage
+    Paginator, QuerySetPaginator, Page, InvalidPage, PageNotAnInteger
 
 __all__ = (
     'InvalidPage',
