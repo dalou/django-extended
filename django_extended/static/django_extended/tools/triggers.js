@@ -196,7 +196,7 @@ $(document).ready(function(menuTo, select)
                 ajaxContentAdded: function() {
                     //select(this.content.find('select'));
                     this.content.find('input,textarea').eq(0).focus();
-                    trigger.trigger('model.loaded', [this.content])
+                    trigger.trigger('modal.loaded', [this.content])
                 }
             },
             mainClass: 'my-mfp-slide-bottom',
