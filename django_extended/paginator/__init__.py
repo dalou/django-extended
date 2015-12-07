@@ -190,6 +190,15 @@ class DiggPaginator(ExPaginator):
 
         self.queryset = self.object_list
 
+    def get_queryset_for_page(self, page):
+        try:
+            queryset = paginator.page(page)
+        except PageNotAnInteger:
+            queryset = paginator.page(1)
+        except EmptyPage:
+            queryset = paginator.page(paginator.num_pages)
+        return queryset
+
     def page(self, number, *args, **kwargs):
         """Return a standard ``Page`` instance with custom, digg-specific
         page ranges attached.
