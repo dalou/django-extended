@@ -163,21 +163,21 @@ $(document).ready(function(menuTo, select)
         });
     });
 
-    $(document).on('click', '[data-modal]', function(event, trigger, target)
+    $(document).on('click', '[data-modal]', function(event, trigger, target, type)
     {
         trigger = $(this);
         target = trigger.data('modal');
         if(target[0] == '#') {
-            var type = 'inline';
+            type = 'inline';
             var cache = true;
         }
         else if(target.endsWith('.png') || target.endsWith('.jpg') || target.endsWith('.gif')) {
 
-            var type = 'image';
+            type = 'image';
             var cache = true;
         }
         else {
-            var type = 'ajax';
+            type = 'ajax';
             var cache = false;
         }
         $.magnificPopup.open({
@@ -191,7 +191,10 @@ $(document).ready(function(menuTo, select)
             callbacks: {
                 open: function() {
                     if(window.mfp) window.mfp.popupsCache = {};
-                    trigger.trigger('model.opened', [])
+                    trigger.trigger('modal.opened', [])
+                    if(type == "inline" || type == "image") {
+                        trigger.trigger('modal.loaded', [$.magnificPopup.instance.content])
+                    }
                 },
                 ajaxContentAdded: function(content) {
                     //select(this.content.find('select'));
