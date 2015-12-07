@@ -1,6 +1,6 @@
 import math
 from django.core.paginator import \
-    Paginator, QuerySetPaginator, Page, InvalidPage, PageNotAnInteger
+    Paginator, QuerySetPaginator, Page, InvalidPage, PageNotAnInteger, EmptyPage
 
 __all__ = (
     'InvalidPage',
@@ -190,13 +190,13 @@ class DiggPaginator(ExPaginator):
 
         self.queryset = self.object_list
 
-    def get_queryset_for_page(self, page):
+    def get_queryset_for_page(self, page=1):
         try:
-            queryset = paginator.page(page)
+            queryset = self.page(page)
         except PageNotAnInteger:
-            queryset = paginator.page(1)
+            queryset = self.page(1)
         except EmptyPage:
-            queryset = paginator.page(paginator.num_pages)
+            queryset = self.page(paginator.num_pages)
         return queryset
 
     def page(self, number, *args, **kwargs):
