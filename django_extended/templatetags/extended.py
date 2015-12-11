@@ -114,7 +114,7 @@ def formatted_price(value, currency='EUR'):
 def formatted_price_html(value, currency='EUR'):
     price = formatted_price(value, currency)
     if price:
-        price = price.replace(u'€', u'<sup>€</sup>')
+        price = price.replace(u' €', u'<sup>€</sup>')
         price = mark_safe(price)
     return price
 

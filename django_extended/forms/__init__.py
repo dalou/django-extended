@@ -6,3 +6,4 @@ from .date import DateField, DateTimeField, DateTimeInput, DateInput
 from .media import MediaInput, MediaField
 from .html import HtmlField, HtmlInput
 from .text import TextField, TextInput
+from .tree import TreeField, TreeInput

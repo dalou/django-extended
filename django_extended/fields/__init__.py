@@ -9,3 +9,4 @@ from .file import ContentTypeRestrictedFileField, UniqueFilename, unique_filenam
 from .html import HtmlField, HTMLField
 from .date import DateTimeField, DateField
 from jsonfield import JSONField
+from .tree import TreeManyToManyField
