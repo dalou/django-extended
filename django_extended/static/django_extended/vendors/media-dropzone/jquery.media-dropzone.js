@@ -137,7 +137,7 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
             // self.options.clickable = self.$elm.find('> *')
         }
 
-        self.options.uploadMultiple = false;//self.options.maxMedias > 1;
+        //self.options.uploadMultiple = false;//self.options.maxMedias > 1;
 
         //console.log(self.inputs)
         self.embed_input.on('keyup', function()

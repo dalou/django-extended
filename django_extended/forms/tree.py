@@ -68,12 +68,16 @@ class TreeInput(forms.SelectMultiple):
 
             %(tree)s
             <script>
-                $('#id_%(name)s_tree_root').on('change', 'select', function(values)
+
+                function django_extended_tree_has_changed(value)
                 {
-                    $(this).parent().find('div[data-choices]').hide();
-                    var pk = $(this).val();
-                    $('#id_%(name)s_tree_'+pk).show();
-                    $('#id_%(name)s_tree_'+pk+' > div[data-independant]').show();
+                    var option = $('#id_%(name)s_tree_root option[value="'+value+'"]');
+                    option.prop('selected', true)
+                    var select = option.parent()
+                    select.val(value)
+                    select.parent().find('div[data-choices]').hide();
+                    $('#id_%(name)s_tree_'+value).show();
+                    $('#id_%(name)s_tree_'+value+' > div[data-independant]').show();
 
                     values = [];
                     $('#id_%(name)s_tree_root select:visible').each(function()
@@ -81,7 +85,18 @@ class TreeInput(forms.SelectMultiple):
                         values.push($(this).val());
                     });
                     $('#id_%(name)s').val(values);
+                }
+
+                $('#id_%(name)s_tree_root').on('change', 'select', function(values)
+                {
+                    django_extended_tree_has_changed($(this).val())
                 });
+                var values = $('#id_%(name)s').val()
+                console.log(values);
+                for(var i in values)
+                {
+                    django_extended_tree_has_changed(values[i]);
+                }
             </script>
         """
 
