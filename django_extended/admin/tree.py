@@ -38,11 +38,11 @@ class TreeAdmin(admin.ModelAdmin):
 
     def get_changelist_form(self, request, **kwargs):
         kwargs.setdefault('form', self.form)
-        return super(CategoryAdmin, self).get_changelist_form(request, **kwargs)
+        return super(TreeAdmin, self).get_changelist_form(request, **kwargs)
 
     def changelist_view(self, request, extra_context=None):
         extra_context = extra_context or {}
-        return super(CategoryAdmin, self).changelist_view(request, extra_context=extra_context)
+        return super(TreeAdmin, self).changelist_view(request, extra_context=extra_context)
 
     def get_queryset(self, request):
         return (super(TreeAdmin, self).get_queryset(request)

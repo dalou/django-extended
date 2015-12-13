@@ -151,22 +151,23 @@ class TreeField(forms.ModelMultipleChoiceField):
 
 
     def recursive_clean(self, value, element):
-        validated = True
-        if element.is_required:
+
+        if element.is_required and not element.is_independant and not str(element.pk) in value:
+            raise ValidationError(u"Séléctionnez une valeur pour %s" % element, code='required')
+
+        if element.is_required and len(element._tree_choices.values()):
             validated = False
             for pk, choice in element._tree_choices.items():
-                if pk in value:
+                if str(pk) in value:
                     validated = True
-            else:
-                validated = True
+                    self.recursive_clean(value, choice)
+            if not validated:
+                raise ValidationError(u"Séléctionnez une valeur---  pour %s" % element, code='required')
 
-        validated2 = False
-        for pk, select in element._tree_selects.items():
-            validated2 = self.recursive_clean(value, select)
-        else:
-            validated2 = True
+        if len(element._tree_selects.values()):
+            for pk, select in element._tree_selects.items():
+                self.recursive_clean(value, select)
 
-        return validated and validated2
 
     def clean(self, value):
         if self.required and not value:
@@ -181,24 +182,9 @@ class TreeField(forms.ModelMultipleChoiceField):
         self.run_validators(value)
 
 
-        print
-        print
-        print value
-        print
-        validated = False
         tree = self.widget.tree
         for pk, element in tree.items():
-            pk = str(pk)
-            print pk
-            if pk in value:
-                validated = self.recursive_clean(value, element)
-
-
-        if not validated:
-            raise ValidationError(self.error_messages['list'], code='required')
-
-
-        print
-        print
+            if str(pk) in value:
+                self.recursive_clean(value, element)
         return qs
 
