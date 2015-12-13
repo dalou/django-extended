@@ -41,7 +41,7 @@ for(h=a.naturalWidth,g=a.naturalHeight,c=document.createElement("canvas"),c.widt
         self.$elm = $elm;
         console.log(self.$elm, self.$elm.data('media-dropzone'))
         self.options = $.extend(true, {
-            uploadMultiple: false,
+            uploadMultiple: true,
             maxFilesize : 5,
             paramName: null,
             maxMedias : 1,
