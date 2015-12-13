@@ -79,17 +79,18 @@ class TreeInput(forms.SelectMultiple):
                     $('#id_%(name)s_tree_'+value).show();
                     $('#id_%(name)s_tree_'+value+' > div[data-independant]').show();
 
+                }
+
+                $('#id_%(name)s_tree_root').on('change', 'select', function(values)
+                {
+                    django_extended_tree_has_changed($(this).val());
+
                     values = [];
                     $('#id_%(name)s_tree_root select:visible').each(function()
                     {
                         values.push($(this).val());
                     });
                     $('#id_%(name)s').val(values);
-                }
-
-                $('#id_%(name)s_tree_root').on('change', 'select', function(values)
-                {
-                    django_extended_tree_has_changed($(this).val())
                 });
                 var values = $('#id_%(name)s').val()
                 console.log(values);
