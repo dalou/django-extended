@@ -3,6 +3,7 @@
 from django.conf import settings
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.html import conditional_escape, format_html, html_safe
 from django.utils.encoding import force_text, smart_text
 from django.forms.utils import flatatt, to_current_timezone
@@ -145,8 +146,59 @@ class TreeField(forms.ModelMultipleChoiceField):
             if element.parent_id:
                 del tree[pk]
 
-
-        print tree
-
         setattr(self, '_tree', tree)
         return tree
+
+
+    def recursive_clean(self, value, element):
+        validated = True
+        if element.is_required:
+            validated = False
+            for pk, choice in element._tree_choices.items():
+                if pk in value:
+                    validated = True
+            else:
+                validated = True
+
+        validated2 = False
+        for pk, select in element._tree_selects.items():
+            validated2 = self.recursive_clean(value, select)
+        else:
+            validated2 = True
+
+        return validated and validated2
+
+    def clean(self, value):
+        if self.required and not value:
+            raise ValidationError(self.error_messages['required'], code='required')
+        elif not self.required and not value:
+            return self.queryset.none()
+        if not isinstance(value, (list, tuple)):
+            raise ValidationError(self.error_messages['list'], code='list')
+        qs = self._check_values(value)
+        # Since this overrides the inherited ModelChoiceField.clean
+        # we run custom validators here
+        self.run_validators(value)
+
+
+        print
+        print
+        print value
+        print
+        validated = False
+        tree = self.widget.tree
+        for pk, element in tree.items():
+            pk = str(pk)
+            print pk
+            if pk in value:
+                validated = self.recursive_clean(value, element)
+
+
+        if not validated:
+            raise ValidationError(self.error_messages['list'], code='required')
+
+
+        print
+        print
+        return qs
+

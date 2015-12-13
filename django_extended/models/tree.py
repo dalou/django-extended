@@ -19,7 +19,7 @@ class Tree(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ('-parent_id', 'order', )
+        ordering = ('-level', 'order', )
         verbose_name = u'Catégorie'
         verbose_name_plural = u'Catégories'
 
