@@ -39,12 +39,10 @@ admin.site.register(EmailingTransaction, EmailingTransactionAdmin)
 
 
 class EmailingForm(forms.ModelForm):
-    # template = forms.CharField(widget=forms.Textarea, required=True)
-    # test_emails = forms.CharField(label=u"Emails de test", widget=forms.Textarea, required=False)
 
     class Meta:
         model = Emailing
-        fields = ('send_count', 'test_count', 'name', 'subject', 'sender', 'template', 'receivers', 'receivers_test',)
+        fields = ('send_count', 'test_count', 'sending_range', 'name', 'subject', 'sender', 'template', 'receivers', 'receivers_test',)
 
 
     def __init__(self, *args, **kwargs):
@@ -64,7 +62,19 @@ class EmailingAdmin(admin.ModelAdmin):
 
     def get_receivers(self, obj):
         receivers = obj.receivers.split(',')
-        return u"""%s destinataires réels : %s [..]""" % ( len(receivers), ", ".join(receivers[0:10]))
+
+        if obj.send_count >= len(receivers):
+            html = u"""<span style="color:green">"""
+        else:
+            html = u"""<span style="color:orange">"""
+
+        html += u"%s emails rééllement envoyés</span>" % obj.send_count
+        html += u"""<br />sur %s destinataires réels : %s [..]""" % ( len(receivers), ", ".join(receivers[0:10]))
+
+
+        return html
+    get_receivers.allow_tags = True
+    get_receivers.short_description = u"Destinataires"
 
     def get_changeform_initial_data(self, request):
 
